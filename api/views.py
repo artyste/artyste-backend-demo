@@ -3,4 +3,4 @@ from django.http import JsonResponse
 
 # Create your views here.
 def apiEndPoint(requests):
-    return JsonResponse('This is EndPoint', safe=False)
+    return JsonResponse('API EndPoint', safe=False)
