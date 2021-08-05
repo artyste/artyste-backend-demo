@@ -1,6 +1,6 @@
 # Arthology API
 
-##User Auth
+### User Auth
 
 Create New User\
 POST - https://api.arthology.io/auth/users/
@@ -36,6 +36,6 @@ POST - https://api.arthology.io/auth/jwt/refresh/
     "refresh": ""
 }
 ```
-###Plataform API
+### Plataform API
 Plataform API EndPoint\
 GET - https://api.arthology.io/v1/
