@@ -1,6 +1,6 @@
 # Arthology API
 
-###User Auth
+##User Auth
 
 Create New User\
 POST - https://api.arthology.io/auth/users/
