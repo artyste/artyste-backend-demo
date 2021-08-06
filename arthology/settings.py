@@ -38,11 +38,12 @@ try:
         timeout=0.01).text
 except requests.exceptions.RequestException:
     pass
-    print(' @ Mimics - Não foi possivel adicionar o ip da EC2 na lista')
+    print(' @ Arthology - Fail to add EC2 ip on the list'
+          '')
 
 if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
-    print(' @ Mimics - ALLOWED_HOSTS')
+    print(' @ Arthology - ALLOWED_HOSTS')
     print(ALLOWED_HOSTS)
 
 # Application definition
