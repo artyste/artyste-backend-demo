@@ -46,6 +46,7 @@ if EC2_PRIVATE_IP:
     print(' @ Arthology - ALLOWED_HOSTS')
     print(ALLOWED_HOSTS)
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'djoser',
     'api.apps.ApiConfig',
@@ -65,6 +67,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -110,6 +113,11 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'admin@arthology.io'
 EMAIL_HOST_PASSWORD = 'RG8UpVWag6TY0k1P'
 EMAIL_USE_TLS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://app.arthology.io",
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
