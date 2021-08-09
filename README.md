@@ -8,7 +8,7 @@ Email: artist@arthology.io\
 Pass: Arth2021
 
 Curator / Gallery\
-Email: curator@arthology.io
+Email: curator@arthology.io\
 Pass: Arth2021
 
 User / Costumer\
