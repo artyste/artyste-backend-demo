@@ -100,10 +100,21 @@ WSGI_APPLICATION = 'arthology.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+# os.environ.get('ARTHOLOGY_RDS_PASS')
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'arthologyrds',
+        'PASSWORD': os.environ.get('ARTHOLOGY_RDS_PASS'),
+        'HOST': 'aari593mi3bwct.cs2cibp8vxrp.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -158,6 +169,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 # S3 BUCKETS CONFIG
+
+
+
 AWS_ACCESS_KEY_ID = os.environ.get('ARTHOLOGY_AWS_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('ARTHOLOGY_AWS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'arthology-files'
