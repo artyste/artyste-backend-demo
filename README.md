@@ -12,7 +12,7 @@ Email: curator@arthology.io\
 Pass: Arth2021
 
 User / Costumer\
-Email: artist@arthology.io\
+Email: user@arthology.io\
 Pass: Arth2021
 
 ### User Auth
