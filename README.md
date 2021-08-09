@@ -1,7 +1,9 @@
 # Arthology API
 
-### Front-end Test Users
+### Front-end
 https://app.arthology.io
+
+### Test Users
 
 Artist\
 Email: artist@arthology.io\
