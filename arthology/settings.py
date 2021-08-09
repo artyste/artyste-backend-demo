@@ -157,6 +157,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# S3 BUCKETS CONFIG
+AWS_ACCESS_KEY_ID = os.environ.get('ARTHOLOGY_AWS_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('ARTHOLOGY_AWS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'arthology-files'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# AWS_DEFAULT_ACL = 'authenticated-read'
+# SECURE_REFERRER_POLICY = 'same-origin'
+
+AWS_S3_ADDRESSING_STYLE = "virtual"
+
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 STATICFILES_DIRS = [

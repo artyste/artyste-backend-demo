@@ -1,0 +1,54 @@
+{% extends 'art/base.html' %}
+
+{% block body %}
+
+
+    <h1 class="h4 mt-3">My Artworks</h1>
+    <hr/>
+
+
+    <div class="row row-cols-1 row-cols-lg-3 g-4">
+
+        {% if artworks %}
+            {% for artwork in artworks %}
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ artwork.name }}</h5>
+                            <p class="card-text">{{ artwork.description }}</p>
+
+                            <a href="{% url 'artworks-new' %}" class="btn btn-outline-primary">Edit</a>
+
+                            {% if artwork.publish %}
+                                <a href="{% url 'artworks-new' %}" class="btn btn-outline-secondary">Unpublish</a>
+                            {% else %}
+                                <a href="{% url 'artworks-new' %}" class="btn btn-outline-primary">Publish</a>
+                            {% endif %}
+
+
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">+</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+
+
+                    <a href="{% url 'artworks-new' %}" class="btn btn-primary">Create new Artwork</a>
+
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

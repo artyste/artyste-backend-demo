@@ -10,10 +10,12 @@ class product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     artist = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
+    price = models.FloatField(default=0)
     file = models.CharField(max_length=255, blank=True, null=True)
     mintingstatus = models.IntegerField('Minting Status', choices=MINTING_STATUS, default=0)
     mintingtx = models.CharField('Minting Transaction', max_length=255, blank=True, null=True)
     mintinghash = models.CharField('Minting Hash', max_length=255, blank=True, null=True)
+    publish = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
