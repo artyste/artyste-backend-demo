@@ -1,0 +1,40 @@
+{% extends 'accounts/base.html' %}
+
+{% block header %}
+
+    <title>Arthology - Login</title>
+
+{% endblock %}
+
+{% block body %}
+    <form method="POST" action="" class="form-floating" id="login-form">
+        {% csrf_token %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h5 class="card-title">Login</h5>
+        <div class="form-floating  mb-3">
+            {{ form.email }}
+            <label for="floatingInputInvalid">Email</label>
+        </div>
+        <div class="form-floating mb-3 ">
+            {{ form.password }}
+            <label for="floatingInputInvalid">Password</label>
+            <div id="emailHelp" class="form-text d-flex align-content-start"><a class="text-black-50" href="">Forgot your password?</a></div>
+        </div>
+
+        <span><button data-callback='onSubmit' data-action='submit' type="submit" class="btn btn-primary float-right">Login</button></span>
+    </form>
+{% endblock %}
+
+{% block cardbottom %}
+    <div class="d-flex justify-content-center links text-primary">
+        <p>Don't have an account? &nbsp;<a href="{% if pk1 and pk2 %}{% url 'register' pk1 %}{% else %}{% url 'register' %}{% endif %}" class="ml-2 text-primary">Sign Up</a></p>
+    </div>
+{% endblock %}

@@ -3,4 +3,4 @@ from .models import UserAccount
 # Register your models here.
 @admin.register(UserAccount)
 class UserAccountAdmin(admin.ModelAdmin):
-    pass
+    filter_horizontal = ('groups','user_permissions',)
