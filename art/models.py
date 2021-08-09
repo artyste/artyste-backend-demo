@@ -7,7 +7,7 @@ class product(models.Model):
         (1, 'Subimited to Blockchain'),
         (2, 'Minted'),
     ]
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     artist = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
     price = models.FloatField(default=0)
@@ -18,7 +18,7 @@ class product(models.Model):
     publish = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class collection(models.Model):
     name = models.CharField(max_length=255)

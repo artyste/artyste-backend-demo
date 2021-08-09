@@ -1,5 +1,20 @@
 # Arthology API
 
+### Front-end Test Users
+https://app.arthology.io
+
+Artist\
+Email: artist@arthology.io\
+Pass: Arth2021
+
+Curator / Gallery\
+Email: curator@arthology.io
+Pass: Arth2021
+
+User / Costumer\
+Email: artist@arthology.io\
+Pass: Arth2021
+
 ### User Auth
 
 Create New User\

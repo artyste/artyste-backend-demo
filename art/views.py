@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from .models import product
+from .forms import productForm
 
 # Create your views here.
 # @login_required(login_url='login')
@@ -18,5 +19,7 @@ def pageartworks(request):
     return render(request, 'art/artworks.html', context)
 
 def pageartworksnew(request):
+    form = productForm()
     context = {}
-    return render(request, 'art/artworks.html', context)
+    context['form'] = form
+    return render(request, 'art/artworks-new.html', context)

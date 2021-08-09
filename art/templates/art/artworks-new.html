@@ -1,0 +1,44 @@
+{% extends 'art/base.html' %}
+{% load static %}
+{% block body %}
+
+
+    <h1 class="h4 mt-3">Artwork - New</h1>
+    <hr/>
+
+
+<div class="btn-group" role="group" aria-label="Basic example">
+  <button type="button" class="btn btn-primary">Informations</button>
+  <button type="button" class="btn btn-outline-primary">Digital / Physical File Upload</button>
+  <button type="button" class="btn btn-outline-primary">NFT Mint</button>
+</div>
+
+
+    <form class="mt-3">
+
+
+    <div class="card mb-3">
+  <div class="card-header">
+    Featured
+  </div>
+
+  <div class="card-body">
+        <div class="form-floating  mb-3">
+            {{ form.title }}
+            <label for="floatingInputInvalid">Title</label>
+        </div>
+        <div class="form-floating  mb-3">
+            {{ form.description }}
+            <label for="floatingInputInvalid">Description</label>
+        </div>
+  </div>
+</div>
+
+
+    <span><button type="button" class="btn btn-success">Next</button></span>
+
+
+    </form>
+
+
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'art/base.html' %}
-
+{% load static %}
 {% block body %}
 
 
@@ -13,7 +13,7 @@
             {% for artwork in artworks %}
                 <div class="col">
                     <div class="card h-100">
-                        <img src="..." class="card-img-top" alt="...">
+                        <img src="{% static 'images/card-no-image.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{ artwork.name }}</h5>
                             <p class="card-text">{{ artwork.description }}</p>
@@ -35,10 +35,10 @@
         {% endif %}
 
         <div class="col">
-            <div class="card h-100">
-                <img src="..." class="card-img-top" alt="...">
+            <div class="card bg-light h-100">
+                <img src="{% static 'images/card-plus.jpg' %}" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">+</h5>
+                    <h5 class="card-title">Create new Artwork</h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                         card's content.</p>
 
