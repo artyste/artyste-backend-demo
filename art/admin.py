@@ -7,10 +7,6 @@ from .models import gallery, collection, product
 class productAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(collection)
-class collectionAdmin(admin.ModelAdmin):
-    filter_horizontal = ('products',)
-
 @admin.register(gallery)
 class galleryAdmin(admin.ModelAdmin):
-    filter_horizontal = ('collection',)
+    filter_horizontal = ('products',)
