@@ -17,7 +17,7 @@ User / Costumer\
 Email: user@arthology.io\
 Pass: Arth2021
 
-### User Auth
+### User Auth API
 
 Create New User\
 POST - https://api.arthology.io/auth/users/
