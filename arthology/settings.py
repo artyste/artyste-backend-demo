@@ -38,8 +38,7 @@ try:
         timeout=0.01).text
 except requests.exceptions.RequestException:
     pass
-    print(' @ Arthology - Fail to add EC2 ip on the list'
-          '')
+    print(' @ Arthology - Fail to add EC2 ip on the list')
 
 if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
@@ -56,13 +55,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'djoser',
     'api.apps.ApiConfig',
     'accounts',
     'art',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

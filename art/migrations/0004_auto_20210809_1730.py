@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='fileimage',
-            field=models.ImageField(blank=True, null=True, upload_to=art.models.user_directory_path),
+            field=models.ImageField(blank=True, null=True, upload_to='images'),
         ),
         migrations.AlterField(
             model_name='product',

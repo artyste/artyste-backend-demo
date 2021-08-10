@@ -1,9 +1,21 @@
 from django.db import models
 from accounts.models import UserAccount
+from django.urls import reverse
+from django.utils import timezone
+from datetime import datetime
+import os
+
+def artist_directory_path(instance, filename):
+    timenow = int(datetime.timestamp(timezone.now()))
+    artistid = instance.artist.id
+    extention = os.path.splitext(filename)
+    return 'documents/{0}/{1}'.format(artistid, str(instance.id) + '_' + str(artistid) + '_' + str(timenow) + extention[-1])
 
 
-def user_directory_path(instance, filename):
-    return 'documents/{0}/{1}'.format(instance.user.username, filename)
+def gallery_directory_path(instance, filename):
+    timenow = int(datetime.timestamp(timezone.now()))
+    extention = os.path.splitext(filename)
+    return 'galleries/{0}/{1}'.format(str(instance.id), str(instance.id) + '_' + str(timenow) + extention[-1])
 
 
 class product(models.Model):
@@ -23,7 +35,7 @@ class product(models.Model):
     price = models.FloatField(default=0)
     fiat = models.IntegerField('Fiat', choices=FIAT_STATUS, default=0)
 
-    fileimage = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
+    fileimage = models.ImageField(upload_to=artist_directory_path, blank=True, null=True)
     filehash = models.CharField(max_length=255, blank=True, null=True)
 
     mintingstatus = models.IntegerField('Minting Status', choices=MINTING_STATUS, default=0)
@@ -47,6 +59,8 @@ class collection(models.Model):
 class gallery(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
+    imglogo = models.ImageField('Imagem Logo', upload_to=gallery_directory_path, blank=True, null=True)
+    imgbabner = models.ImageField('Imagem Banner', upload_to=gallery_directory_path, blank=True, null=True)
     admin = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
     products = models.ManyToManyField(product, blank=True)
 
