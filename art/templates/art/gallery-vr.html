@@ -66,7 +66,7 @@
 
             // Texture Loading
             var textureLoader = new THREE.TextureLoader();
-            crateTexture = textureLoader.load("{{ artwork.fileimage.url }}");
+            crateTexture = textureLoader.load("https://{{ product.filehash }}.ipfs.dweb.link/");
 
             // Create mesh with these textures
             crate = new THREE.Mesh(
