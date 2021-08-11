@@ -32,10 +32,10 @@
     {% for artworks in gallery.products.select_related %}
 
         <div class="col">
-                    <div class="card h-100">
+                    <div class="card">
                         <img src="{{ artworks.fileimage.url }}" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <a class="stretched-link text-dark" href=""><h5 class="card-title">{{ artworks.title }}</h5></a>
+                            <a class="stretched-link text-dark" href="{% url 'artworks-detail' pk=artworks.id %}"><h5 class="card-title">{{ artworks.title }}</h5></a>
                             <p class="card-text">{{ artwork.description }}</p>
                         </div>
                         <div class="card-footer">

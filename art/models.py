@@ -9,7 +9,7 @@ def artist_directory_path(instance, filename):
     timenow = int(datetime.timestamp(timezone.now()))
     artistid = instance.artist.id
     extention = os.path.splitext(filename)
-    return 'documents/{0}/{1}'.format(artistid, str(instance.id) + '_' + str(artistid) + '_' + str(timenow) + extention[-1])
+    return 'documents/{0}/{1}'.format(artistid, str(artistid) + '_' + str(timenow) + extention[-1])
 
 
 def gallery_directory_path(instance, filename):
@@ -35,14 +35,15 @@ class product(models.Model):
     price = models.FloatField(default=0)
     fiat = models.IntegerField('Fiat', choices=FIAT_STATUS, default=0)
 
-    fileimage = models.ImageField(upload_to=artist_directory_path, blank=True, null=True)
-    filehash = models.CharField(max_length=255, blank=True, null=True)
+    fileimage = models.FileField(upload_to=artist_directory_path, blank=True, null=True)
+    filehash = models.CharField('cid', max_length=255, blank=True, null=True)
 
     mintingstatus = models.IntegerField('Minting Status', choices=MINTING_STATUS, default=0)
     mintingtx = models.CharField('Minting Transaction', max_length=255, blank=True, null=True)
     mintinghash = models.CharField('Minting Hash', max_length=255, blank=True, null=True)
 
     wallet = models.CharField(max_length=255, blank=True, null=True)
+    royalty = models.FloatField(default=0)
 
     visible = models.BooleanField(default=False)
     publish = models.BooleanField(default=False)

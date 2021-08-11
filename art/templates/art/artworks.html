@@ -7,16 +7,27 @@
     <hr/>
 
 
-    <div class="row row-cols-1 row-cols-lg-3 g-4">
+    <div class="row row-cols-1 row-cols-lg-4 g-4">
+
+    <div class="col">
+            <div class="card bg-light">
+                <img src="{% static 'images/card-plus.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Create new Artwork</h5>
+
+                    <a href="{% url 'artworks-new' %}" class="btn btn-primary">Create new Artwork</a>
+
+            </div>
+            </div>
+        </div>
 
         {% if artworks %}
             {% for artwork in artworks %}
                 <div class="col">
-                    <div class="card h-100">
-                        <img src="{% static 'images/card-no-image.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card">
+                        <a href="{% url 'artworks-detail' pk=artwork.id %}"><img src="{% if artwork.fileimage %}{{ artwork.fileimage.url }}{% else %}{% static 'images/card-no-image.jpg' %}{% endif %}" class="card-img-top" alt="..."></a>
                         <div class="card-body">
-                            <h5 class="card-title">{{ artwork.name }}</h5>
-                            <p class="card-text">{{ artwork.description }}</p>
+                            <h5 class="card-title">{{ artwork.title }}</h5>
 
                             <a href="{% url 'artworks-new' %}" class="btn btn-outline-primary">Edit</a>
 
@@ -34,20 +45,7 @@
             {% endfor %}
         {% endif %}
 
-        <div class="col">
-            <div class="card bg-light h-100">
-                <img src="{% static 'images/card-plus.jpg' %}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Create new Artwork</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
 
-
-                    <a href="{% url 'artworks-new' %}" class="btn btn-primary">Create new Artwork</a>
-
-            </div>
-            </div>
-        </div>
 
     </div>
 

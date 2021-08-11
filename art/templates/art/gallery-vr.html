@@ -1,6 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
+{{ gallery }}
+{% static 'js/starship_logo.jpg' %}
+
 <head>
     <title>{{ gallery.name }} - VR</title>
     <meta charset="utf-8">
@@ -9,8 +13,6 @@
     <script type="text/javascript" src="{% static 'js/three.min.js' %}"></script>
 
     <style>
-
-
         body {
             margin: 0;
             background-color: #000;
@@ -26,7 +28,6 @@
 <body>
 
 <script type="module">
-
 
     var scene, camera, renderer, mesh;
     var meshFloor, ambientLight, light;
