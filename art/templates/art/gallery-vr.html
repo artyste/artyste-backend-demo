@@ -2,9 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{{ gallery }}
-{% static 'js/starship_logo.jpg' %}
-
 <head>
     <title>{{ gallery.name }} - VR</title>
     <meta charset="utf-8">
@@ -26,6 +23,8 @@
 
 </head>
 <body>
+
+{{ product.filehash }}
 
 <script type="module">
 
@@ -66,7 +65,8 @@
 
             // Texture Loading
             var textureLoader = new THREE.TextureLoader();
-            crateTexture = textureLoader.load("https://{{ product.filehash }}.ipfs.dweb.link/");
+            crateTexture = textureLoader.load("https://{{ artwork.filehash }}.ipfs.dweb.link/");
+
 
             // Create mesh with these textures
             crate = new THREE.Mesh(
@@ -103,6 +103,7 @@
     function onWindowResize() {
 
         camera.aspect = window.innerWidth / window.innerHeight;
+
         camera.updateProjectionMatrix();
 
         renderer.setSize(window.innerWidth, window.innerHeight);
