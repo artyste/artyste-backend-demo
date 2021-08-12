@@ -18,6 +18,19 @@ def gallery_directory_path(instance, filename):
     return 'galleries/{0}/{1}'.format(str(instance.id), str(instance.id) + '_' + str(timenow) + extention[-1])
 
 
+class gallery(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+    imglogo = models.ImageField('Imagem Logo', upload_to=gallery_directory_path, blank=True, null=True)
+    imgbabner = models.ImageField('Imagem Banner', upload_to=gallery_directory_path, blank=True, null=True)
+    admin = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
+
+    def get_absolute_url(self):
+        return '/%s/' % self.slug
+
+    def __str__(self):
+        return self.name
+
 class product(models.Model):
     FIAT_STATUS = [
         (0, 'Ethereum'),
@@ -30,8 +43,8 @@ class product(models.Model):
     ]
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    artist = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING, related_name='Artist')
-    curator = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING, related_name='Curator', blank=True, null=True)
+    artist = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
+    gallery = models.ForeignKey(gallery, on_delete=models.DO_NOTHING, blank=True, null=True)
     price = models.FloatField(default=0)
     fiat = models.IntegerField('Fiat', choices=FIAT_STATUS, default=0)
 
@@ -53,20 +66,6 @@ class product(models.Model):
 
 class collection(models.Model):
     name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
-class gallery(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
-    imglogo = models.ImageField('Imagem Logo', upload_to=gallery_directory_path, blank=True, null=True)
-    imgbabner = models.ImageField('Imagem Banner', upload_to=gallery_directory_path, blank=True, null=True)
-    admin = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
-    products = models.ManyToManyField(product, blank=True)
-
-    def get_absolute_url(self):
-        return '/%s/' % self.slug
 
     def __str__(self):
         return self.name

@@ -9,4 +9,4 @@ class productAdmin(admin.ModelAdmin):
 
 @admin.register(gallery)
 class galleryAdmin(admin.ModelAdmin):
-    filter_horizontal = ('products',)
+    pass
