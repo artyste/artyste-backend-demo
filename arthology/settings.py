@@ -128,10 +128,12 @@ EMAIL_HOST_USER = 'admin@arthology.io'
 EMAIL_HOST_PASSWORD = 'RG8UpVWag6TY0k1P'
 EMAIL_USE_TLS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://app.arthology.io",
-]
+CORS_ALLOW_ALL_ORIGINS = True
+#
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://app.arthology.io",
+# ]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
