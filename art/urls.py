@@ -9,5 +9,5 @@ urlpatterns = [
     path('artworks/new', views.pageartworksnew, name='artworks-new'),
     path('artworks/<int:pk>/', views.pageproductdetail.as_view(), name='artworks-detail'),
     path('gallery/<slug:slug>/', views.pagegallerydetail.as_view(), name='gallery-detail'),
-    path('gallery/<slug:slug>/vr', views.pagegalleryvrdetail.as_view(), name='gallery-vr-detail'),
+    path('galleries/', views.pagegalleries, name='galleries'),
 ]

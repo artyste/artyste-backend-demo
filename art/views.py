@@ -13,6 +13,12 @@ def pagehome(request):
     context['galleries'] = galleries_get
     return render(request, 'art/home.html', context)
 
+def pagegalleries(request):
+    context = {}
+    galleries_get = gallery.objects.all()
+    context['galleries'] = galleries_get
+    return render(request, 'art/galleries.html', context)
+
 def pageartworks(request):
     context = {}
     user = request.user
@@ -52,14 +58,6 @@ class pageproductdetail(DetailView):
 class pagegallerydetail(DetailView):
     model = gallery
     template_name = 'art/gallery.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-class pagegalleryvrdetail(DetailView):
-    model = gallery
-    template_name = 'art/gallery-vr.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

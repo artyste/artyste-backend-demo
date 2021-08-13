@@ -1,5 +1,10 @@
 {% extends 'art/base.html' %}
 {% load static %}
+
+{% block header %}
+<title>Arthology</title>
+{% endblock %}
+
 {% block body %}
     <div class="container">
 
@@ -11,20 +16,19 @@
 
         <hr/>
 
-<div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
-
-    {% for gallery in galleries %}
-        <a href="{% url 'gallery-detail' slug=gallery.slug %}" class="col">
-            <div class="img-thumbnail rounded">
-                <img src="{{ gallery.imglogo.url }}" class="card-img-top">
-            </div>
-        </a>
-    {% endfor %}
-
-
-
-
+    <h3>Top Galleries</h3>
+    <hr/>
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+        {% for gallery in galleries %}
+            <a href="{% url 'gallery-detail' slug=gallery.slug %}" class="col">
+                <div class="img-thumbnail rounded">
+                    <img src="{{ gallery.imglogo.url }}" class="card-img-top">
+                </div>
+            </a>
+        {% endfor %}
     </div>
+
+
 
 {% endblock %}
     </div>

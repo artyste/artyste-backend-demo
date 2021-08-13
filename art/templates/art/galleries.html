@@ -1,0 +1,40 @@
+{% extends 'art/base.html' %}
+{% load static %}
+
+{% block header %}
+<title>Galleries - Arthology</title>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+
+    <div class="row d-flex justify-content-between mt-3">
+        <div class="col align-self-end">
+            <h1 class="h4 pb-0 mb-0">Galleries</h1>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
+                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon"
+                       aria-describedby="button-addon1">
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+        {% for gallery in galleries %}
+            <a href="{% url 'gallery-detail' slug=gallery.slug %}" class="col">
+                <div class="img-thumbnail rounded">
+                    <img src="{{ gallery.imglogo.url }}" class="card-img-top">
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}
+    </div>

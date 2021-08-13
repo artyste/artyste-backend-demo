@@ -1,5 +1,11 @@
 {% extends 'art/base.html' %}
 {% load static %}
+
+{% block header %}
+<title>{{ gallery.name }}- Gallery - Arthology</title>
+{% endblock %}
+
+
 {% block body %}
 
 
@@ -29,22 +35,25 @@
     </div>
     <div class="col-10">
     <div class="row row-cols-1 row-cols-lg-3 g-4">
-    {% for artworks in gallery.product_set.select_related %}
+
+    {% for artwork in gallery.product_set.select_related %}
 
         <div class="col">
-                    <div class="card">
-                        <img src="{{ artworks.fileimage.url }}" class="card-img-top" alt="...">
+                    <div class="card h-100">
+{#                        <img src="{{ artwork.fileimage.url }}" class="card-img-top" alt="...">#}
+                        <div class="square" style="background-image: url('{% if artwork.fileimage %}{{ artwork.fileimage.url }}{% else %}{% static 'images/card-no-image.jpg' %}{% endif %}')"></div>
                         <div class="card-body">
-                            <a class="stretched-link text-dark" href="{% url 'artworks-detail' pk=artworks.id %}"><h5 class="card-title">{{ artworks.title }}</h5></a>
-                            <p class="card-text">{{ artwork.description }}</p>
+                            <a class="stretched-link text-dark" href="{% url 'artworks-detail' pk=artwork.id %}"><h5 class="card-title">{{ artwork.title }}</h5></a>
+
                         </div>
                         <div class="card-footer">
-                            <small>{{ artworks.artist.last_name }} {{ artworks.artist.first_name }}</small>
+                            <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>
                         </div>
                     </div>
                 </div>
 
     {% endfor %}
+
     </div>
     </div>
 

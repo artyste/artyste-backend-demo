@@ -1,24 +1,45 @@
 {% extends 'art/base.html' %}
 {% load static %}
+
+{% block header %}
+<title>{{ product.title }} - Arthology</title>
+{% endblock %}
+
+
 {% block body %}
 
-    <div class="mt-4">
-    <h1 class="h4 align-text-bottom">{{ product.title }}</h1>
-    <h2 class="h5 align-text-bottom">{{ product.artist.first_name }} {{ product.artist.last_name }}</h2>
-    <p class="align-text-bottom">Gallery: {{ product.gallery }}</p>
-  <hr class="mt-2"/>
 
-        {% if perms.art %}
+            {% if perms.art %}
             {% if perms.art.add_product %}
 
                 {% if product.artist == user %}
-                    <div class="card mb-4 border-success">
-
+                    <div class="card mb-4 mt-4 border-primary">
                         <div class="card-body">
-                            <h5 class="card-title">Artist</h5>
-                            {% if product.mintingstatus == 0 %}
-                                <button class="btn btn-primary">Generate NFT</button>
-                            {% endif %}
+                            <h5 class="card-title">Settings</h5>
+                            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 d-flex justify-content-between">
+                            <div class="col px-4 pb-3 pt-2 d-grid">
+                                    <p>NFT - {% if product.mintingstatus == 0 %}<span class="text-secondary">Not Minted</span>{% elif product.mintingstatus == 1 %}<span class="text-warning">Processing...</span>{% elif product.mintingstatus == 2 %}<span class="text-success">Minted!</span>{% endif %}</p>
+                                    {% if product.mintingstatus == 0 %}<button class="btn btn-secondary">Mint NFT</button>
+                                    {% elif product.mintingstatus == 1 %}<button class="btn btn-warning">See Transaction</button>
+                                    {% elif product.mintingstatus == 2 %}<button class="btn btn-primary">Explore</button>{% endif %}
+                                </div>
+                            <div class="col  px-4 pb-3 pt-2 d-grid">
+                                <p>Gallery - {% if product.gallery %}<a class="fw-bold text-dark" href="{% url 'gallery-detail' slug=product.gallery.slug %}">{{ product.gallery.name }}</a>{% else %}{% if product.visible %} Turn off visibility to galleries {% else %} Turn on visibility to galleries {% endif %}{% endif %}</p>
+                                    {% if product.gallery %}<button class="btn btn-outline-danger">Remove Gallery</button>
+                                    {% else %}
+                                        {% if product.visible %}<button class="btn btn-success">Visible</button>{% else %}<button class="btn btn-outline-secondary">Unvisible</button>{% endif %}
+                                    {% endif %}
+                                </div>
+
+                            <div class="col px-4 pb-3 pt-2 d-grid">
+                                <p>Royalties - <span class="h6">{{ product.royalty }}%</span></p>
+                                    <button class="btn btn-outline-primary">Change</button></span>
+                                </div>
+
+                            <div class="col px-4 pb-3 pt-2 d-grid gap-2">
+                                            {% if product.publish %}<button class="btn btn-success">Published</button>{% else %}<button class="btn btn-outline-secondary">Unpublished</button>{% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endif %}
@@ -26,19 +47,47 @@
             {% endif %}
             {% if perms.art.add_gallery %}
 
-                {% if product.curator == user %}
-                    <div class="card mb-4 border-danger">
+                {% if product.gallery.admin == user %}
+                    <div class="card mb-4 mt-4 border-secondary">
                         <div class="card-body">
-                            <h5 class="card-title">Curator</h5>
-                            {% if product.mintingstatus == 0 %}
-                                <button class="btn btn-primary">Generate NFT</button>
+                            <h5 class="card-title">Settings</h5>
+                            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 d-flex justify-content-between">
+                            <div class="col px-4 pb-3 pt-2 d-grid">
+                                    <p>NFT - {% if product.mintingstatus == 0 %}<span class="text-secondary">Not Minted</span>{% elif product.mintingstatus == 1 %}<span class="text-warning">Processing...</span>{% elif product.mintingstatus == 2 %}<span class="text-success">Minted!</span>{% endif %}</p>
+                                    {% if product.mintingstatus == 0 %}<button class="btn btn-secondary">Mint NFT</button>
+                                    {% elif product.mintingstatus == 1 %}<button class="btn btn-warning">See Transaction</button>
+                                    {% elif product.mintingstatus == 2 %}<button class="btn btn-primary">Explore</button>{% endif %}
+                                </div>
+
+                            {% if product.gallery %}
+                            <div class="col  px-4 pb-3 pt-2 d-grid">
+                                <p>Gallery - <a class="fw-bold text-dark" href="{% url 'gallery-detail' slug=product.gallery.slug %}">{{ product.gallery.name }}</a></p>
+                                   <button class="btn btn-outline-danger">Remove Gallery</button>
+                                </div>
                             {% endif %}
+
+                            <div class="col px-4 pb-3 pt-2 d-grid">
+                                <p>Royalties</p>
+                                    <h5>{{ product.royalty }}%</h5>
+                                </div>
+
+                            <div class="col px-4 pb-3 pt-2 d-grid gap-2">
+                                            {% if product.publish %}<button class="btn btn-success">Published</button>{% else %}<button class="btn btn-outline-secondary">Unpublished</button>{% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endif %}
 
             {% endif %}
         {% endif %}
+
+
+    <div class="mt-4">
+    <h1 class="h4 align-text-bottom">{{ product.title }}</h1>
+    <h2 class="h5 align-text-bottom">{{ product.artist.first_name }} {{ product.artist.last_name }}</h2>
+    <p class="align-text-bottom">Gallery: {{ product.gallery }}</p>
+  <hr class="mt-2"/>
 
 </div>
 
