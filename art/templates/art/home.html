@@ -8,6 +8,9 @@
 {% block body %}
     <div class="container">
 
+
+
+
         <div class="input-group mt-3">
             <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
             <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon"
@@ -16,9 +19,33 @@
 
         <hr/>
 
+    <h3>Top Artworks</h3>
+    <hr/>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+
+    {% for artwork in products|slice:4 %}
+
+        <div class="col">
+                    <div class="card h-100">
+{#                        <img src="{{ artwork.fileimage.url }}" class="card-img-top" alt="...">#}
+                        <div class="square" style="background-image: url('{% if artwork.fileimage %}{{ artwork.fileimage.url }}{% else %}{% static 'images/card-no-image.jpg' %}{% endif %}')"></div>
+                        <div class="card-body">
+                            <a class="stretched-link text-dark" href="{% url 'artworks-detail' pk=artwork.id %}"><h5 class="card-title">{{ artwork.title }}</h5></a>
+
+                        </div>
+                        <div class="card-footer">
+                            <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>
+                        </div>
+                    </div>
+                </div>
+
+    {% endfor %}
+
+    </div>
+
     <h3>Top Galleries</h3>
     <hr/>
-    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4 mb-4">
         {% for gallery in galleries %}
             <a href="{% url 'gallery-detail' slug=gallery.slug %}" class="col">
                 <div class="img-thumbnail rounded">

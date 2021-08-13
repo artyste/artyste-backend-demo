@@ -10,7 +10,9 @@ from django.views.generic.detail import DetailView
 def pagehome(request):
     context = {}
     galleries_get = gallery.objects.all()
+    products_get = product.objects.all()
     context['galleries'] = galleries_get
+    context['products'] = products_get
     return render(request, 'art/home.html', context)
 
 def pagegalleries(request):
