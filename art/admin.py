@@ -5,7 +5,7 @@ from .models import gallery, collection, product
 
 @admin.register(product)
 class productAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('created_at', 'updated_at', )
 
 @admin.register(gallery)
 class galleryAdmin(admin.ModelAdmin):
