@@ -17,6 +17,10 @@ User / Costumer\
 Email: user@arthology.io\
 Pass: Arth2021
 
+### VR Module's Repository
+
+https://github.com/arthology-io/arthology-vr
+
 ### User Auth API
 
 Create New User\
