@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from .models import product, gallery
 from .forms import productForm
 from django.views.generic.detail import DetailView
+import json
 
 # Create your views here.
 # @login_required(login_url='login')
@@ -64,3 +65,19 @@ class pagegallerydetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+def pageproductmint(request, pk):
+    context = {}
+    print(pk)
+    artworks_get = product.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        artworks_get.mintingstatus = 1
+        artworks_get.mintingtx = data['tx']
+        artworks_get.save()
+
+
+    context['product'] = artworks_get
+    return render(request, 'art/mint.html', context)
+

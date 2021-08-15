@@ -19,8 +19,8 @@
                             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 d-flex justify-content-between">
                             <div class="col px-4 pb-3 pt-2 d-grid">
                                     <p>NFT - {% if product.mintingstatus == 0 %}<span class="text-secondary">Not Minted</span>{% elif product.mintingstatus == 1 %}<span class="text-warning">Processing...</span>{% elif product.mintingstatus == 2 %}<span class="text-success">Minted!</span>{% endif %}</p>
-                                    {% if product.mintingstatus == 0 %}<button class="btn btn-secondary">Mint NFT</button>
-                                    {% elif product.mintingstatus == 1 %}<button class="btn btn-warning">See Transaction</button>
+                                    {% if product.mintingstatus == 0 %}<a class="btn btn-secondary" href="{% url 'artworks-mint' pk=product.pk %}">Mint NFT</a>
+                                    {% elif product.mintingstatus == 1 %}<a class="btn btn-warning" href="https://ropsten.etherscan.io/tx/{{ product.mintingtx }}" target="_blank">See Transaction</a>
                                     {% elif product.mintingstatus == 2 %}<button class="btn btn-primary">Explore</button>{% endif %}
                                 </div>
                             <div class="col  px-4 pb-3 pt-2 d-grid">
