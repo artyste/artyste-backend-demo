@@ -203,7 +203,7 @@
                             "X-CSRFToken": csrftoken,
                         },
                     });
-                    {#window.location.href = "{% url 'artworks-detail' pk=product.id %}";#}
+                    window.location.href = "{% url 'artworks-detail' pk=product.id %}";
 
                 });
             },
