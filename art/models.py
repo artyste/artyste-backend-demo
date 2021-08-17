@@ -50,6 +50,7 @@ class product(models.Model):
 
     fileimage = models.FileField(upload_to=artist_directory_path, blank=True, null=True)
     filehash = models.CharField('cid', max_length=255, blank=True, null=True)
+    filemeta = models.CharField('meta cid', max_length=255, blank=True, null=True)
 
     mintingstatus = models.IntegerField('Minting Status', choices=MINTING_STATUS, default=0)
     mintingtx = models.CharField('Minting Transaction', max_length=255, blank=True, null=True)

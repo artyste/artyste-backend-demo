@@ -7,6 +7,8 @@ class gallerySerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 class productSerializers(serializers.ModelSerializer):
+    my_field2 = serializers.ReadOnlyField(source='my_field')
+
     class Meta:
         model = product
         fields = '__all__'

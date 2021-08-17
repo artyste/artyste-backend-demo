@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from .models import product
 import requests
 import io
+import json
 
 @receiver(post_save, sender=product)
 def create_product(sender, instance, created, **kwargs):
@@ -26,9 +27,27 @@ def create_product(sender, instance, created, **kwargs):
             response_json = response.json()
             print(response_json['value']['cid'])
 
-            instance.filehash = response_json['value']['cid']
+            img_cid = response_json['value']['cid']
+            instance.filehash = img_cid
             instance.save()
 
             print('produto criado id:', instance.id)
+
+            # json_metadata = {
+            #     "name": instance.title,
+            #     "image": "https://" + img_cid + ".ipfs.dweb.link",
+            #     "description": instance.description
+            # }
+            #
+            # try:
+            #     response_meta = requests.post('https://api.nft.storage/upload', headers=headers, data=json.dumps(json_metadata))
+            #     response_meta_json = response_meta.json()
+            #     metadata_cid = response_meta_json['value']['cid']
+            #     instance.filemeta = metadata_cid
+            #     instance.save()
+            # except:
+            #     print('Algo Ao salvar METADATA para StorageNFT')
+
+
         except:
-            print('Algo Deu Errado')
+            print('Algo Ao salvar arquivo para StorageNFT')

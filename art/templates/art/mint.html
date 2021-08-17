@@ -65,6 +65,9 @@
       <th scope="row">NFT Storage Link:</th>
         <td><a href="https://{{ product.filehash }}.ipfs.dweb.link/" target="_blank">https://{{ product.filehash }}.ipfs.dweb.link/</a></td>
     </tr>
+      <th scope="row">Metadata Cid:</th>
+        <td>[[ meta_cid ]]</td>
+    </tr>
   </tbody>
 </table>
 
@@ -155,6 +158,7 @@
             imgcidurl: 'https://{{ product.filehash }}.ipfs.dweb.link/',
             art_name: '{{ product.title }}',
             art_Artist: '{{ product.artist.first_name }} {{ product.artist.last_name }}',
+            meta_cid: null,
 
         },
         created: function () {
@@ -181,31 +185,69 @@
 
             Transaction: async function () {
 
-                const metadata = {
-                    "image": this.imgcidurl,
-                    "name": this.art_name,
-                    "description": "Dubiella Test Description",
-                };
+                const meta_json = {
+                        "name": '{{ product.title }}',
+                        "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
+                        "description": '{{ product.description }}',
+                    };
 
-                await contract.mintNFT(this.accounts[0], metadata).then( res => {
-                    console.log(res);
-                    console.log(res.hash);
+                fetch("https://api.nft.storage/upload", {
+                    method: 'POST',
+                    body: JSON.stringify(meta_json),
+                    headers: {
+                        'accept': 'application/json',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0OEI2NjBkMUQ3MEZGNDk1MjYzNjZDMkNDZERFNTExMzZFNWQ1NDEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODY2NzY0NjE4NywibmFtZSI6IlRlc3QifQ.MVf1uJHqsLPX6HTnZRrSi4VZYfJyS7zS1hNTiqCMUpg',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(response => {
 
-                    fetch("{% url 'artworks-mint' pk=product.id %}", {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            'tx': res.hash.toString(),
-                            'pk': {{ product.id }},
-                        }),
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': 'application/json',
-                            "X-CSRFToken": csrftoken,
-                        },
-                    });
-                    window.location.href = "{% url 'artworks-detail' pk=product.id %}";
+                        response.json().then(async data => {
+                            this.meta_cid = data['value']['cid'];
 
-                });
+                            const metadata = 'https://' + data['value']['cid'] + '.ipfs.dweb.link';
+                            console.log(metadata);
+
+                            await contract.mintNFT(this.accounts[0], metadata).then( res => {
+                                console.log(res);
+                                console.log(res.hash);
+
+                                fetch("{% url 'artworks-mint' pk=product.id %}", {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        'tx': res.hash.toString(),
+                                        'pk': {{ product.id }},
+                                    }),
+                                    headers: {
+                                        'Accept': 'application/json, text/plain, */*',
+                                        'Content-Type': 'application/json',
+                                        "X-CSRFToken": csrftoken,
+                                    },
+                                });
+                                window.location.href = "{% url 'artworks-detail' pk=product.id %}";
+                            });
+
+
+
+
+                        });
+
+                    })
+
+                if (this.meta_cid){
+                    const metadata = 'https://' + this.meta_cid + '.ipfs.dweb.link/';
+                    console.log(metadata)
+                }
+
+
+
+
+
+
+
+
+
+
             },
 
             fpost: function () {
