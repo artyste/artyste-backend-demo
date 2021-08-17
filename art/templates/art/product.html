@@ -3,11 +3,14 @@
 
 {% block header %}
 <title>{{ product.title }} - Arthology</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+{#    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>#}
 {% endblock %}
 
 
 {% block body %}
 
+<div id="app">
 
             {% if perms.art %}
             {% if perms.art.add_product %}
@@ -18,10 +21,17 @@
                             <h5 class="card-title">Settings</h5>
                             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 d-flex justify-content-between">
                             <div class="col px-4 pb-3 pt-2 d-grid">
-                                    <p>NFT - {% if product.mintingstatus == 0 %}<span class="text-secondary">Not Minted</span>{% elif product.mintingstatus == 1 %}<span class="text-warning">Processing...</span>{% elif product.mintingstatus == 2 %}<span class="text-success">Minted!</span>{% endif %}</p>
-                                    {% if product.mintingstatus == 0 %}<a class="btn btn-secondary" href="{% url 'artworks-mint' pk=product.pk %}">Mint NFT</a>
-                                    {% elif product.mintingstatus == 1 %}<a class="btn btn-warning" href="https://ropsten.etherscan.io/tx/{{ product.mintingtx }}" target="_blank">See Transaction</a>
-                                    {% elif product.mintingstatus == 2 %}<button class="btn btn-primary">Explore</button>{% endif %}
+
+
+
+                                    <p>NFT - <span v-if="mintingstatus === 0" class="text-secondary">Not Minted</span>
+                                            <span v-if="mintingstatus === 1" class="text-warning">Processing...</span>
+                                            <span v-if="mintingstatus === 2" class="text-success">Minted!</span></p>
+
+                                    <a v-if="mintingstatus === 0" class="btn btn-secondary" href="{% url 'artworks-mint' pk=product.pk %}">Mint NFT</a>
+                                    <a v-if="mintingstatus === 1" class="btn btn-warning" href="https://ropsten.etherscan.io/tx/{{ product.mintingtx }}" target="_blank">See Transaction</a>
+                                    <a  v-if="mintingstatus === 2" class="btn btn-primary":href="mintingexplorer" target="_blank">Explore</a>
+
                                 </div>
                             <div class="col  px-4 pb-3 pt-2 d-grid">
                                 <p>Gallery - {% if product.gallery %}<a class="fw-bold text-dark" href="{% url 'gallery-detail' slug=product.gallery.slug %}">{{ product.gallery.name }}</a>{% else %}{% if product.visible %} Turn off visibility to galleries {% else %} Turn on visibility to galleries {% endif %}{% endif %}</p>
@@ -53,10 +63,15 @@
                             <h5 class="card-title">Settings</h5>
                             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 d-flex justify-content-between">
                             <div class="col px-4 pb-3 pt-2 d-grid">
-                                    <p>NFT - {% if product.mintingstatus == 0 %}<span class="text-secondary">Not Minted</span>{% elif product.mintingstatus == 1 %}<span class="text-warning">Processing...</span>{% elif product.mintingstatus == 2 %}<span class="text-success">Minted!</span>{% endif %}</p>
-                                    {% if product.mintingstatus == 0 %}<button class="btn btn-secondary">Mint NFT</button>
-                                    {% elif product.mintingstatus == 1 %}<button class="btn btn-warning">See Transaction</button>
-                                    {% elif product.mintingstatus == 2 %}<button class="btn btn-primary">Explore</button>{% endif %}
+
+                                    <p>NFT - <span v-if="mintingstatus === 0" class="text-secondary">Not Minted</span>
+                                            <span v-if="mintingstatus === 1" class="text-warning">Processing...</span>
+                                            <span v-if="mintingstatus === 2" class="text-success">Minted!</span></p>
+
+                                    <a v-if="mintingstatus === 0" class="btn btn-secondary" href="{% url 'artworks-mint' pk=product.pk %}">Mint NFT</a>
+                                    <a v-if="mintingstatus === 1" class="btn btn-warning" href="https://ropsten.etherscan.io/tx/{{ product.mintingtx }}" target="_blank">See Transaction</a>
+                                    <a  v-if="mintingstatus === 2" class="btn btn-primary" :href="mintingexplorer" target="_blank">Explore</a>
+
                                 </div>
 
                             {% if product.gallery %}
@@ -96,8 +111,11 @@
     <div class="col-sm-6">
                 <img class="img-fluid rounded" src="{{ product.fileimage.url }}" />
         {% if product.filehash %}
-            <div class="mt-3">cid: <p><a href="https://{{ product.filehash }}.ipfs.dweb.link/" target="_blank">{{ product.filehash }}</a></p></div>
+            <div class="mt-3">Img CID: <p><a href="https://{{ product.filehash }}.ipfs.dweb.link/" target="_blank">{{ product.filehash }}</a></p></div>
         {% endif %}
+
+            <div v-if="mintingstatus === 2" class="mt-3">NFT Hash: <p><a :href="mintingexplorer" target="_blank">[[ mintinghash ]]</a></p></div>
+            <div v-if="mintingstatus === 2" class="mt-3">NFT ID: <p>[[ mintingid ]]</p></div>
     </div>
     <div class="col-sm-6">
         <div class="mt-4 mt-sm-0">
@@ -116,7 +134,103 @@
 
 
     </div>
+    </div>
+
+    <script src="{% static '/js/ethers-5.2.min.js' %}" type="application/javascript"></script>
+    <script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data: {
+            message: 'hey',
+            mintingstatus: {{ product.mintingstatus }},
+            mintingtx: {% if product.mintingtx %}{{ product.mintingtx }}{% else %}null{% endif %},
+            mintinghash: '{% if product.mintinghash %}{{ product.mintinghash }}{% endif %}',
+            mintingid: {% if product.mintingid %}{{ product.mintingid }}{% else %}null{% endif %},
+            mintingexplorer: 'https://ropsten.etherscan.io/token/{% if product.mintinghash %}{{ product.mintinghash }}{% endif %}?a={% if product.mintingid %}{{ product.mintingid }}{% endif %}',
+        },
+        created: function () {
+            if (this.mintingstatus === 1) {
+                this.tx_get();
+            }
+        },
+        mounted: function () {
+
+                this.timer = setInterval(() => {
+                    if (this.mintingstatus === 1) {
+                        this.tx_get();
+                     }
+                }, 30000)
+
+        },
+        methods: {
+            tx_get: async function () {
+
+
+                data = '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params": ["{{ product.mintingtx }}"],"id":1}';
+                fetch("https://ropsten.infura.io/v3/613d46b23c354abeafc7aa755c21c3a6", {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Content-Type': 'application/json', },
+                })
+                .then(response => {
+                    response.json().then(async data => {
 
 
 
+                        this.mintingstatus = 2;
+                        this.mintinghash = data['result']['to'];
+                        this.mintingid = parseInt(data['result']['logs'][0]['topics'][3]);
+                        this.mintingexplorer = 'https://ropsten.etherscan.io/token/'+ this.mintinghash +'?a='+ this.mintingid;
+
+                        console.log(this.mintingid);
+                        console.log(this.mintinghash);
+
+
+                        fetch("{% url 'artworks-detail' pk=product.id %}", {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        'hash': data['result']['to'],
+                                        'id': parseInt(data['result']['logs'][0]['topics'][3]),
+                                    }),
+                                    headers: {
+                                        'Accept': 'application/json, text/plain, */*',
+                                        'Content-Type': 'application/json',
+                                        "X-CSRFToken": csrftoken,
+                                    },
+                                });
+
+
+                    })
+                })
+
+
+            },
+            getAccount: async function () {
+                this.accounts = await ethereum.request({method: 'eth_requestAccounts'});
+            },
+        },
+    });
+
+
+</script>
 {% endblock %}

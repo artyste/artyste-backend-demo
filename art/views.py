@@ -49,14 +49,19 @@ def pageartworksnew(request):
     return render(request, 'art/artworks-new.html', context)
 
 
+def pageproductdetail(request, pk):
+    context = {}
+    artworks_get = product.objects.get(pk=pk)
 
-class pageproductdetail(DetailView):
-    model = product
-    template_name = 'art/product.html'
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        artworks_get.mintingstatus = 2
+        artworks_get.mintinghash = data['hash']
+        artworks_get.mintingid = data['id']
+        artworks_get.save()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    context['product'] = artworks_get
+    return render(request, 'art/product.html', context)
 
 class pagegallerydetail(DetailView):
     model = gallery
@@ -80,4 +85,3 @@ def pageproductmint(request, pk):
 
     context['product'] = artworks_get
     return render(request, 'art/mint.html', context)
-

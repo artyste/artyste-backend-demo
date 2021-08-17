@@ -55,6 +55,7 @@ class product(models.Model):
     mintingstatus = models.IntegerField('Minting Status', choices=MINTING_STATUS, default=0)
     mintingtx = models.CharField('Minting Transaction', max_length=255, blank=True, null=True)
     mintinghash = models.CharField('Minting Hash', max_length=255, blank=True, null=True)
+    mintingid = models.IntegerField('Minting Id', max_length=255, blank=True, null=True)
 
     wallet = models.CharField(max_length=255, blank=True, null=True)
     royalty = models.FloatField(default=0)
