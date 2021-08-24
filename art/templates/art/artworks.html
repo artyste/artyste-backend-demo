@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block header %}
-<title>My Artwork - Arthology</title>
+<title>My Arts - Arthology</title>
 {% endblock %}
 
 
@@ -10,7 +10,7 @@
 {% block body %}
 
 <div>
-    <h1 class="h4 mt-3">My Artworks</h1>
+    <h1 class="h4 mt-3">My Arts</h1>
 
     <div class="input-group mt-3 col-3">
             <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
@@ -25,12 +25,23 @@
 
     <div class="row row-cols-1 row-cols-lg-5 g-4 ">
 
+    {% if perms.art.add_product %}
         <div class="col">
             <div class="card bg-light h-100">
                 <div class="square" style="background-image: url('{% static 'images/card-plus.jpg' %}')"></div>
                 <div class="card-body">
+                    <a href="{% url 'artworks-new' %}" class="btn btn-primary">Create new Artwork</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
-                    <a href="{% url 'artworks-new' %}" class="btn btn-primary">Add new Artwork</a>
+
+        <div class="col">
+            <div class="card bg-light h-100">
+                <div class="square" style="background-image: url('{% static 'images/card-plus.jpg' %}')"></div>
+                <div class="card-body">
+                    <a href="{% url 'artworks-new' %}" class="btn btn-primary">Import Art</a>
                 </div>
             </div>
         </div>

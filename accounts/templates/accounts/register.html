@@ -1,0 +1,71 @@
+{% extends 'accounts/base.html' %}
+
+{% block header %}
+
+    <title>Arthology - Register</title>
+
+{% endblock %}
+
+{% block body %}
+    <form method="POST" action="" class="form-floating" id="login-form">
+        {% csrf_token %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">{{ error|escape }}</div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">{{ error|escape }}</div>
+    {% endfor %}
+{% endif %}
+                            <h5 class="card-title">Create new account</h5>
+                            <div class="form-floating  mb-3">
+                                {{ form.email }}
+                                <label for="floatingInputInvalid">Email</label>
+                            </div>
+
+
+                            <div class="form-floating mb-3">
+                                {{ form.first_name }}
+                                <label for="floatingInputInvalid">First name</label>
+                            </div>
+
+
+                            <div class="form-floating mb-3">
+                                {{ form.last_name }}
+                                <label for="floatingInputInvalid">Last name</label>
+                            </div>
+
+
+
+                            <div class="form-floating  mb-3">
+                                {{ form.password1 }}
+                                <label for="floatingInputInvalid">Password</label>
+                            </div>
+
+                            <div class="form-floating  mb-3">
+                                {{ form.password2 }}
+                                <label for="floatingInputInvalid">Confirm password</label>
+                            </div>
+
+                            <input type="hidden" id="subscricao" name="subscricao" value="{% if subscricao %}{{ subscricao }}{% endif %}">
+
+                            <span><button type="submit" class="btn btn-primary float-right">Register</button></span>
+
+{% endblock %}
+
+{% block cardbottom %}
+    <div class="d-flex justify-content-center links text-primary">
+        <p>Already have an account? &nbsp;<a href="{% if pk1 and pk2 %}{% url 'login' pk1 %}{% else %}{% url 'login' %}{% endif %}" class="ml-2 text-primary">Sign in</a></p>
+    </div>
+{% endblock %}

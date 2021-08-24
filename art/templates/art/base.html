@@ -91,14 +91,12 @@
                 </li>
             {% endif %}
 
-            {% if perms.art.add_product %}
                 <li class="nav-item">
                     <a class="nav-link fw-bold" href="{% url 'artworks' %}">
                     <span data-feather="bar-chart-2"></span>
-                    My Artworks
+                    My Arts
                     </a>
                 </li>
-            {% endif %}
 
 
             <li class="nav-item">
@@ -117,7 +115,7 @@
 
     {% else %}
 
-        <a class="btn btn-secondary" role="button">Create Account</a>
+        <a class="btn btn-secondary" role="button" href="{% url 'register' %}">Create Account</a>
         <a class="btn btn-outline-secondary ms-2" role="button" href="{% url 'login' %}">Login</a>
 
     {% endif %}
