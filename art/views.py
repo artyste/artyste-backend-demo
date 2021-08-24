@@ -5,6 +5,9 @@ from .models import product, gallery
 from .forms import productForm
 from django.views.generic.detail import DetailView
 import json
+import uuid
+import requests
+import os
 
 # Create your views here.
 # @login_required(login_url='login')
@@ -14,6 +17,31 @@ def pagehome(request):
     products_get = product.objects.all()
     context['galleries'] = galleries_get
     context['products'] = products_get
+
+
+
+    try:
+        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+
+        url = 'https://api-sandbox.circle.com/v1/wallets/' + request.user.circle_walletId
+
+        headers = {
+            'Accept': 'application/json',
+            'Authorization': "Bearer " + CIRCLEAPIKEY,
+        }
+
+        response = requests.get(url, headers=headers)
+        responseJson = response.json()
+        print(responseJson)
+        print(responseJson['data']['balances'][0]['amount'])
+
+        context['circle'] = responseJson['data']['balances'][0]['amount']
+
+    except:
+        context['circle'] = '0.00'
+
+
+
     return render(request, 'art/home.html', context)
 
 def pagegalleries(request):
