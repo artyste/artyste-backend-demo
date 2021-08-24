@@ -75,9 +75,9 @@
   <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
     <i class="fa fa-user"></i>
   </button>
-  <ul class="dropdown-menu dropdown-menu-end">
-    <li><a class="dropdown-item" href="#">Action</a></li>
-    <li><a class="dropdown-item" href="#">Another action</a></li>
+  <ul class="dropdown-menu dropdown-menu-start">
+    <li><a class="dropdown-item" href="{% url 'artworks' %}">My Arts</a></li>
+    <li><a class="dropdown-item" href="#">My Account</a></li>
     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
   </ul>
 </div>
