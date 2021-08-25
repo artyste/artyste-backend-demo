@@ -89,6 +89,7 @@ def pageproductdetail(request, pk):
         artworks_get.save()
 
     context['product'] = artworks_get
+    context['page'] = 'productdetail'
     return render(request, 'art/product.html', context)
 
 class pagegallerydetail(DetailView):
@@ -110,6 +111,6 @@ def pageproductmint(request, pk):
         artworks_get.mintingtx = data['tx']
         artworks_get.save()
 
-
     context['product'] = artworks_get
+    context['page'] = 'productmint'
     return render(request, 'art/mint.html', context)
