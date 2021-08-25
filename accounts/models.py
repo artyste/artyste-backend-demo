@@ -36,9 +36,12 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+
     wallet_hash = models.CharField(max_length=255, blank=True, null=True)
+
     circle_walletId = models.CharField(max_length=255, blank=True, null=True)
     circle_entityId = models.CharField(max_length=255, blank=True, null=True)
+    circle_chainETH = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserAccountManager()
 

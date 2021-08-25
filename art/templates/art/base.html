@@ -211,6 +211,7 @@
                 chainID: '',
                 balance: null,
                 auth: {% if user.is_authenticated %} true {% else %} false {% endif %},
+                ethusd: 0,
 
                 {% if page == 'productdetail' %}
                     mintingstatus: {{ product.mintingstatus }},
@@ -229,6 +230,8 @@
                     {% endif %}
                 {% endif %}
 
+            this.getEthUsd();
+
 
             {% if product %}
                 if (this.mintingstatus === 1) {
@@ -240,13 +243,17 @@
             },
                 mounted: function () {
 
-                    {% if page == 'productdetail' %}
+
                         this.timer = setInterval(() => {
+                            {% if page == 'productdetail' %}
                             if (this.mintingstatus === 1) {
                                 this.tx_get();
+
                             }
+                            {% endif %}
+                            this.getEthUsd();
                         }, 30000)
-                    {% endif %}
+
         },
             methods: {
                 metaConnect: async function () {
@@ -263,46 +270,61 @@
                     this.chainID = chainId;
                 },
 
-            {% if page == 'productdetail' %}
-                tx_get: async function () {
-                    data = '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params": ["{{ product.mintingtx }}"],"id":1}';
-                    fetch("https://ropsten.infura.io/v3/613d46b23c354abeafc7aa755c21c3a6", {
-                        method: 'POST',
-                        body: data,
-                        headers: {'Content-Type': 'application/json',},
-                    })
+                getEthUsd: async function () {
+                    fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
                         .then(response => {
                             response.json().then(async data => {
-
-                                this.mintingstatus = 2;
-                                this.mintinghash = data['result']['to'];
-                                this.mintingid = parseInt(data['result']['logs'][0]['topics'][3]);
-                                this.mintingexplorer = 'https://ropsten.etherscan.io/token/' + this.mintinghash + '?a=' + this.mintingid;
-
-                                console.log(this.mintingid);
-                                console.log(this.mintinghash);
-
-                                fetch("{% url 'artworks-detail' pk=product.id %}", {
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        'hash': data['result']['to'],
-                                        'id': parseInt(data['result']['logs'][0]['topics'][3]),
-                                    }),
-                                    headers: {
-                                        'Accept': 'application/json, text/plain, */*',
-                                        'Content-Type': 'application/json',
-                                        "X-CSRFToken": csrftoken,
-                                    },
-                                });
-
+                                this.ethusd = data['ethereum']['usd'];
                             })
-                        })
+                        });
                 },
-            {% endif %}
+                EthToUsd:  function (eth) {
+                    return eth * this.ethusd;
+                },
+                UsdToEth:  function (usd) {
+                    return usd / this.ethusd;
+                },
+
+                {% if page == 'productdetail' %}
+                    tx_get: async function () {
+                        data = '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params": ["{{ product.mintingtx }}"],"id":1}';
+                        fetch("https://ropsten.infura.io/v3/613d46b23c354abeafc7aa755c21c3a6", {
+                            method: 'POST',
+                            body: data,
+                            headers: {'Content-Type': 'application/json',},
+                        })
+                            .then(response => {
+                                response.json().then(async data => {
+
+                                    this.mintingstatus = 2;
+                                    this.mintinghash = data['result']['to'];
+                                    this.mintingid = parseInt(data['result']['logs'][0]['topics'][3]);
+                                    this.mintingexplorer = 'https://ropsten.etherscan.io/token/' + this.mintinghash + '?a=' + this.mintingid;
+
+                                    console.log(this.mintingid);
+                                    console.log(this.mintinghash);
+
+                                    fetch("{% url 'artworks-detail' pk=product.id %}", {
+                                        method: 'POST',
+                                        body: JSON.stringify({
+                                            'hash': data['result']['to'],
+                                            'id': parseInt(data['result']['logs'][0]['topics'][3]),
+                                        }),
+                                        headers: {
+                                            'Accept': 'application/json, text/plain, */*',
+                                            'Content-Type': 'application/json',
+                                            "X-CSRFToken": csrftoken,
+                                        },
+                                    });
+
+                                })
+                            })
+                    },
+                {% endif %}
 
             }
         });
-    </script>
+        </script>
 
 </body>
 </html>

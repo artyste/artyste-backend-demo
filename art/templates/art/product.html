@@ -74,7 +74,7 @@
                                     <a class="btn btn-dark v-cloak--inline" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>
                                     <a v-if="mintingstatus === 0" class="btn btn-secondary v-cloak--hidden" href="{% url 'artworks-mint' pk=product.pk %}">Mint NFT</a>
                                     <a v-if="mintingstatus === 1" class="btn btn-warning v-cloak--hidden" href="https://ropsten.etherscan.io/tx/{{ product.mintingtx }}" target="_blank">See Transaction</a>
-                                    <a  v-if="mintingstatus === 2" class="btn btn-primary v-cloak--hidden" :href="mintingexplorer" target="_blank">Explore</a>
+                                    <a  v-if="mintingstatus === 2" class="btn btn-primary v-cloak--hidden" href="mintingexplorer" target="_blank">Explore</a>
 
                                 </div>
 
@@ -103,7 +103,7 @@
 
 
     <div class="mt-4">
-    <h1 class="h4 align-text-bottom">{{ product.title }}</h1>
+    <h1 class="align-text-bottom">{{ product.title }}</h1>
     <h2 class="h5 align-text-bottom">{{ product.artist.first_name }} {{ product.artist.last_name }}</h2>
     <p class="align-text-bottom">Gallery: {{ product.gallery }}</p>
   <hr class="mt-2"/>
@@ -118,7 +118,7 @@
             <div class="mt-3">Img CID: <p><a href="https://{{ product.filehash }}.ipfs.dweb.link/" target="_blank">{{ product.filehash }}</a></p></div>
         {% endif %}
 
-            <div v-if="mintingstatus === 2" class="mt-3">NFT Hash: <p><a :href="mintingexplorer" target="_blank">[[ mintinghash ]]</a></p></div>
+            <div v-if="mintingstatus === 2" class="mt-3">NFT Hash: <p><a href="mintingexplorer" target="_blank">[[ mintinghash ]]</a></p></div>
             <div v-if="mintingstatus === 2" class="mt-3">NFT ID: <p>[[ mintingid ]]</p></div>
     </div>
     <div class="col-sm-6">
@@ -127,9 +127,13 @@
         {{ product.description }}
         </div>
 
-        <div class="row row-cols-auto mt-4">
-            <div class="h1">{% if product.fiat == 0 %}Eth{% else %}US${% endif %} {{ product.price }}</div>
-            <button class="btn btn-lg btn-primary">Buy</button>
+        <div class="mt-4">
+            <div class="h1">{% if product.fiat == 0 %}ETH{% else %}US${% endif %} {{ product.price }}</div>
+
+            <div class="h6" v-cloak><span class="v-cloak--hidden">{% if product.fiat == 0 %}US$ [[ EthToUsd({{ product.price }}) ]] {% else %}ETH [[ UsdToEth({{ product.price }}) ]] {% endif %}</span></div>
+
+            <button class="btn btn-warning text-dark fw-bold"><img class="me-2" src="{% static 'images/metamask.svg' %}" width="20px" /> Buy with Metamask</button>
+            <button class="btn btn-warning text-dark fw-bold"><img class="me-2" src="{% static 'images/circle.svg' %}" width="20px" /></i> Buy with Credit-Card</button>
         </div>
 
 
