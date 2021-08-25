@@ -24,6 +24,34 @@
     {% block header %}
     {% endblock %}
 
+<style>
+    [v-cloak] .v-cloak--block {
+        display: block;
+    }
+
+    [v-cloak] .v-cloak--inline {
+        display: inline;
+    }
+
+    [v-cloak] .v-cloak--inlineBlock {
+        display: inline-block;
+    }
+
+    [v-cloak] .v-cloak--hidden {
+        display: none;
+    }
+
+    [v-cloak] .v-cloak--invisible {
+        visibility: hidden;
+    }
+
+    .v-cloak--block,
+    .v-cloak--inline,
+    .v-cloak--inlineBlock {
+        display: none;
+    }
+</style>
+
 </head>
 <body>
 
@@ -90,20 +118,28 @@
                       {% if circle %}USD {{ circle }}{% endif %}
                   </a>
 
+                    <div v-cloak>
+                  <span class="v-cloak--inline">
+                      <button class="btn btn-secondary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span class="visually-hidden">Loading...</span>
+</button>
+                </span>
 
-                  <span v-show="!connected">
-                      <a v-on:click="metaConnect" class="btn btn-outline-secondary">
+                  <span v-show="!connected" >
+                      <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
                           <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
                            Connect
                       </a>
                 </span>
 
-                  <span v-show="connected">
-                     <a v-on:click="metaConnect" class="btn btn-outline-secondary">
+                  <span v-show="connected" >
+                     <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
                           <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
                            [[ account ]]
                       </a>
                      </span>
+                    </div>
 
 
               </div>
@@ -176,7 +212,7 @@
                 balance: null,
                 auth: {% if user.is_authenticated %} true {% else %} false {% endif %},
 
-                {% if product %}
+                {% if page == 'productdetail' %}
                     mintingstatus: {{ product.mintingstatus }},
                     mintingtx: {% if product.mintingtx %}{{ product.mintingtx }}{% else %}null{% endif %},
                     mintinghash: '{% if product.mintinghash %}{{ product.mintinghash }}{% endif %}',
@@ -186,6 +222,7 @@
 
             },
             created: function () {
+
                 {% if user.is_authenticated %}
                     {% if user.wallet_hash %}
                     this.metaConnect();
@@ -202,12 +239,13 @@
 
             },
                 mounted: function () {
-                {% if product %}
-                this.timer = setInterval(() => {
-                    if (this.mintingstatus === 1) {
-                        this.tx_get();
-                     }
-                }, 30000)
+
+                    {% if page == 'productdetail' %}
+                        this.timer = setInterval(() => {
+                            if (this.mintingstatus === 1) {
+                                this.tx_get();
+                            }
+                        }, 30000)
                     {% endif %}
         },
             methods: {
@@ -225,7 +263,7 @@
                     this.chainID = chainId;
                 },
 
-            {% if product %}
+            {% if page == 'productdetail' %}
                 tx_get: async function () {
                     data = '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params": ["{{ product.mintingtx }}"],"id":1}';
                     fetch("https://ropsten.infura.io/v3/613d46b23c354abeafc7aa755c21c3a6", {
