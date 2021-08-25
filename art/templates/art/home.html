@@ -58,45 +58,4 @@
 
 
 {% block footer %}
-    <script>
-
-
-
-        var app = new Vue({
-            delimiters: ['[[', ']]'],
-            el: '#app',
-            data: {
-                accounts: [],
-                account: '',
-                message: 'Connect your wallet to get start!',
-                connected: false,
-                chainID: '',
-                provider: false,
-                balance: null,
-                tx: null,
-            },
-            created: function () {
-                this.getAccount();
-            },
-            methods: {
-                metaConnect: function (event) {
-                    this.getAccount();
-                },
-                getAccount: async function () {
-                    this.accounts = await ethereum.request({method: 'eth_requestAccounts'});
-                    await this.connect();
-                },
-                connect: async function () {
-                    this.account = this.accounts[0].slice(0, 4) + '...' + this.accounts[0].slice(-4);
-                    this.connected = true;
-                    this.message = "Wallet Connected";
-
-                },
-                contchainChange: function (chainId) {
-                    console.log(chainId);
-                    this.chainID = chainId;
-                },
-            }
-        });
-    </script>
 {% endblock %}

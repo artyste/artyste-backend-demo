@@ -8,7 +8,9 @@
 
     <!-- Bootstrap CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+{#<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
             crossorigin="anonymous"></script>
@@ -89,22 +91,19 @@
                   </a>
 
 
-                  <div v-if="!connected">
-
+                  <span v-show="!connected">
                       <a v-on:click="metaConnect" class="btn btn-outline-secondary">
                           <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
-                          Connect
+                           Connect
                       </a>
+                </span>
 
-                  </div>
-                  <div v-else>
-
-                      <a class="btn btn-outline-secondary">
+                  <span v-show="connected">
+                     <a v-on:click="metaConnect" class="btn btn-outline-secondary">
                           <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
-                          [[ account ]]
+                           [[ account ]]
                       </a>
-
-                  </div>
+                     </span>
 
 
               </div>
@@ -123,12 +122,149 @@
     {% block body %}
     {% endblock %}
 
+    {% block footer %}
+    {% endblock %}
 
 
 </div>
 
-    {% block footer %}
-    {% endblock %}
+
+<script src="{% static '/js/ethers-5.2.min.js' %}" type="application/javascript"></script>
+        <script>
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            const csrftoken = getCookie('csrftoken');
+
+        ethereum.on('chainChanged', (chainId) => {
+            console.log(chainId);
+            app.contchainChange(chainId);
+            window.location.reload();
+        });
+
+        ethereum.on('accountsChanged', (accounts) => {
+            console.log(accounts);
+            app.metaConnect();
+        });
+
+        ethereum.on('connect', (connectInfo) => {
+            console.log(connectInfo);
+        });
+
+        var app = new Vue({
+            delimiters: ['[[', ']]'],
+            el: '#app',
+            data: {
+                accounts: [],
+                account: '',
+                connected: false,
+                chainID: '',
+                balance: null,
+                auth: {% if user.is_authenticated %} true {% else %} false {% endif %},
+
+                {% if product %}
+                    mintingstatus: {{ product.mintingstatus }},
+                    mintingtx: {% if product.mintingtx %}{{ product.mintingtx }}{% else %}null{% endif %},
+                    mintinghash: '{% if product.mintinghash %}{{ product.mintinghash }}{% endif %}',
+                    mintingid: {% if product.mintingid %}{{ product.mintingid }}{% else %}null{% endif %},
+                    mintingexplorer: 'https://ropsten.etherscan.io/token/{% if product.mintinghash %}{{ product.mintinghash }}{% endif %}?a={% if product.mintingid %}{{ product.mintingid }}{% endif %}',
+                {% endif %}
+
+            },
+            created: function () {
+                {% if user.is_authenticated %}
+                    {% if user.wallet_hash %}
+                    this.metaConnect();
+                    {% endif %}
+                {% endif %}
+
+
+            {% if product %}
+                if (this.mintingstatus === 1) {
+                    this.tx_get();
+                }
+                {% endif %}
+
+
+            },
+                mounted: function () {
+                {% if product %}
+                this.timer = setInterval(() => {
+                    if (this.mintingstatus === 1) {
+                        this.tx_get();
+                     }
+                }, 30000)
+                    {% endif %}
+        },
+            methods: {
+                metaConnect: async function () {
+                    this.accounts = await ethereum.request({method: 'eth_requestAccounts'});
+                    await this.connect();
+                },
+                connect: async function () {
+                    this.account = this.accounts[0].slice(0, 4) + '...' + this.accounts[0].slice(-4);
+                    console.log(this.accounts);
+                    this.connected = true;
+                },
+                contchainChange: function (chainId) {
+                    {#console.log(chainId);#}
+                    this.chainID = chainId;
+                },
+
+            {% if product %}
+                tx_get: async function () {
+                    data = '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params": ["{{ product.mintingtx }}"],"id":1}';
+                    fetch("https://ropsten.infura.io/v3/613d46b23c354abeafc7aa755c21c3a6", {
+                        method: 'POST',
+                        body: data,
+                        headers: {'Content-Type': 'application/json',},
+                    })
+                        .then(response => {
+                            response.json().then(async data => {
+
+                                this.mintingstatus = 2;
+                                this.mintinghash = data['result']['to'];
+                                this.mintingid = parseInt(data['result']['logs'][0]['topics'][3]);
+                                this.mintingexplorer = 'https://ropsten.etherscan.io/token/' + this.mintinghash + '?a=' + this.mintingid;
+
+                                console.log(this.mintingid);
+                                console.log(this.mintinghash);
+
+                                fetch("{% url 'artworks-detail' pk=product.id %}", {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        'hash': data['result']['to'],
+                                        'id': parseInt(data['result']['logs'][0]['topics'][3]),
+                                    }),
+                                    headers: {
+                                        'Accept': 'application/json, text/plain, */*',
+                                        'Content-Type': 'application/json',
+                                        "X-CSRFToken": csrftoken,
+                                    },
+                                });
+
+                            })
+                        })
+                },
+            {% endif %}
+
+            }
+        });
+    </script>
 
 </body>
 </html>
