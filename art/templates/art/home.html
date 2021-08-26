@@ -29,6 +29,9 @@
                         <div class="card-body">
                             <a class="stretched-link text-dark" href="{% url 'artworks-detail' pk=artwork.id %}"><h5 class="card-title">{{ artwork.title }}</h5></a>
 
+                            <div class="h6 mb-0">{% if artwork.fiat == 0 %}ETH{% else %}US${% endif %} {{ artwork.price }}</div>
+                            <div class="text-muted small" v-cloak><span class="v-cloak--hidden ">{% if artwork.fiat == 0 %}US$ [[ EthToUsd({{ artwork.price }}) ]] {% else %}ETH [[ UsdToEth({{ artwork.price }}) ]] {% endif %}</span></div>
+
                         </div>
                         <div class="card-footer">
                             <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>

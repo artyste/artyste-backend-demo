@@ -41,10 +41,15 @@
                             <div class="card h-100">
                                 <div class="square" style="background-image: url('{% if artwork.fileimage %}{{ artwork.fileimage.url }}{% else %}{% static 'images/card-no-image.jpg' %}{% endif %}')"></div>
                                 <div class="card-body">
+                                    <div
+                                            class="fw-bold">{{ artwork.title }}</div>
+
+                            <div class="h6 mb-0">{% if artwork.fiat == 0 %}ETH{% else %}US${% endif %} {{ artwork.price }}</div>
+                            <div class="text-muted small" v-cloak><span class="v-cloak--hidden ">{% if artwork.fiat == 0 %}US$ [[ EthToUsd({{ artwork.price }}) ]] {% else %}ETH [[ UsdToEth({{ artwork.price }}) ]] {% endif %}</span></div>
+
                                     <a class="stretched-link text-dark"
-                                       href="{% url 'artworks-detail' pk=artwork.id %}"><h5
-                                            class="card-title">{{ artwork.title }}</h5></a>
-                                    {% if artwork.fiat == 0 %}ETH {% else %}USD {% endif %}{{ artwork.price }}
+                                       href="{% url 'artworks-detail' pk=artwork.id %}"><a class="">See More</a></a>
+
                                 </div>
                                 <div class="card-footer">
                                     <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>
