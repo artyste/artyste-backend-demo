@@ -53,7 +53,7 @@ def pagegalleries(request):
 def pageartworks(request):
     context = {}
     user = request.user
-    artworks_get = product.objects.filter(artist=user)
+    artworks_get = product.objects.filter(owner=user)
     context['artworks'] = artworks_get
     return render(request, 'art/artworks.html', context)
 

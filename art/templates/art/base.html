@@ -101,22 +101,29 @@
           {% if user.is_authenticated %}
               <div class="text-end d-flex">
 
-                    <div class="btn-group me-2">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    <i class="fa fa-user"></i>
-  </button>
-  <ul class="dropdown-menu dropdown-menu-start">
-    <li><a class="dropdown-item" href="{% url 'artworks' %}">My Arts</a></li>
-    <li><a class="dropdown-item" href="#">My Account</a></li>
-    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-  </ul>
-</div>
+                  <div class="btn-group me-2">
+                      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                              aria-expanded="false">
+                          <i class="fa fa-user"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end pt-2">
+                          <li><a class="dropdown-item" href="{% url 'artworks' %}"><i class="fa fa-palette me-2"></i>My Arts</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fa fa-user-edit me-2"></i>My Account</a></li>
+                          <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt me-2"></i>Logout</a></li>
+                      </ul>
+                  </div>
 
-
-                  <a class="btn btn-outline-primary me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Circle Wallet ID: {{ user.circle_walletId }}">
-                      <img src="{% static 'images/circle.svg' %}" height="25px"/>
-                      {% if circle %}USD {{ circle }}{% endif %}
-                  </a>
+                  <div class="btn-group me-2">
+                      <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
+                              aria-expanded="false">
+                          <img src="{% static 'images/circle.svg' %}" height="25px"/>
+                          {% if circle %}US$ {{ circle }}{% endif %}
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end pt-2">
+                          <li><a class="dropdown-item" href="#"><i class="fa fa-wallet me-2"></i> My Wallet</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fa fa-money-check-alt me-2"></i>Add Funds</a></li>
+                      </ul>
+                  </div>
 
                     <div v-cloak>
                   <span class="v-cloak--inline">
