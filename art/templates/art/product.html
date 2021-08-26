@@ -130,12 +130,12 @@
         <div class="mt-4">
             <div class="h1">{% if product.fiat == 0 %}ETH{% else %}US${% endif %} {{ product.price }}</div>
 
-            <div class="h6" v-cloak><span class="v-cloak--hidden">{% if product.fiat == 0 %}US$ [[ EthToUsd({{ product.price }}) ]] {% else %}ETH [[ UsdToEth({{ product.price }}) ]] {% endif %}</span></div>
+            <div class="h6" v-cloak><span class="v-cloak--hidden">{% if product.fiat == 0 %}[[ FormatedEthToUsd({{ product.price }}) ]] {% else %}ETH [[ FormatedUsdToEth({{ product.price }}) ]] {% endif %}</span></div>
 
 
             <div class="d-grid d-xl-flex">
-                <button class="btn btn-warning text-dark fw-bold me-0 me-xl-2"><img class="me-2" src="{% static 'images/metamask.svg' %}" width="20px"/> Buy with Metamask</button>
-                <button class="btn btn-warning text-dark fw-bold mt-2 mt-xl-0"><img class="me-2" src="{% static 'images/circle.svg' %}" width="20px"/></i> Buy with Credit-Card</button>
+                <a class="btn btn-warning text-dark fw-bold me-0 me-xl-2"><img class="me-2" src="{% static 'images/metamask.svg' %}" width="20px"/> Buy with Metamask</a>
+                <a class="btn btn-warning text-dark fw-bold mt-2 mt-xl-0" href="{% url 'checkout' pk=product.pk %}"><img class="me-2" src="{% static 'images/circle.svg' %}" width="20px"/></i> Buy with Credit-Card</a>
             </div>
 
 

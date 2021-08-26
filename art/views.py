@@ -92,6 +92,14 @@ def pageproductdetail(request, pk):
     context['page'] = 'productdetail'
     return render(request, 'art/product.html', context)
 
+def pagecheckout(request, pk):
+    context = {}
+    artworks_get = product.objects.get(pk=pk)
+
+    context['product'] = artworks_get
+    context['page'] = 'checkout'
+    return render(request, 'art/checkout.html', context)
+
 class pagegallerydetail(DetailView):
     model = gallery
     template_name = 'art/gallery.html'

@@ -39,20 +39,33 @@
 
                         <div class="col">
                             <div class="card h-100">
+                            <a class="stretched-link text-dark" href="{% url 'artworks-detail' pk=artwork.id %}">
                                 <div class="square" style="background-image: url('{% if artwork.fileimage %}{{ artwork.fileimage.url }}{% else %}{% static 'images/card-no-image.jpg' %}{% endif %}')"></div>
+                            </a>
                                 <div class="card-body">
-                                    <div
-                                            class="fw-bold">{{ artwork.title }}</div>
 
-                            <div class="h6 mb-0">{% if artwork.fiat == 0 %}ETH{% else %}US${% endif %} {{ artwork.price }}</div>
-                            <div class="text-muted small" v-cloak><span class="v-cloak--hidden ">{% if artwork.fiat == 0 %}US$ [[ EthToUsd({{ artwork.price }}) ]] {% else %}ETH [[ UsdToEth({{ artwork.price }}) ]] {% endif %}</span></div>
-
-                                    <a class="stretched-link text-dark"
-                                       href="{% url 'artworks-detail' pk=artwork.id %}"><a class="">See More</a></a>
-
-                                </div>
-                                <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="fw-bold">{{ artwork.title }}</div>
                                     <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <div class="mb-0 ">
+                                        <div>Price</div>
+                                        <div class="h6">{% if artwork.fiat == 0 %}
+                                            <img class="me-2" src="{% static 'images/eth_logo.svg' %}"
+                                                 height="20px"/>{% else %}
+                                            <img class="me-2" src="{% static 'images/dollar.svg' %}"
+                                                 width="20px"/>{% endif %}{{ artwork.price }}</div>
+                                    </div>
+                                    <div class="text-muted small" v-cloak><span
+                                            class="v-cloak--hidden ">{% if artwork.fiat == 0 %} [[ FormatedEthToUsd(
+                                        {{ artwork.price }}) ]] {% else %}ETH [[ FormatedUsdToEth({{ artwork.price }})
+                                        ]] {% endif %}</span></div>
+                                </div>
+                            </div>
+
+
                                 </div>
                             </div>
                         </div>
