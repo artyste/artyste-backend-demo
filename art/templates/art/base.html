@@ -23,6 +23,11 @@
 <script src="https://nosir.github.io/cleave.js/dist/cleave.min.js" crossorigin="anonymous"></script>
 
 
+{% if page == 'checkout' %}
+    <script src="https://cdn.jsdelivr.net/npm/maska@latest/dist/maska.js"></script>
+{% endif %}
+
+
 
     <link rel="icon" href="{% static '/favicon/favicon.ico' %}">
 
@@ -235,6 +240,25 @@
                     mintingexplorer: 'https://ropsten.etherscan.io/token/{% if product.mintinghash %}{{ product.mintinghash }}{% endif %}?a={% if product.mintingid %}{{ product.mintingid }}{% endif %}',
                 {% endif %}
 
+                {% if page == 'checkout' %}
+                    creditCardNumber: null,
+                    creditCardNumberRaw: null,
+                    creditCardNumberFlag: 0,
+                    creditCardNumberErro: false,
+                    creditCardNumberValid: false,
+
+                    creditCardName: null,
+                    creditCardNameValid: false,
+
+                    creditCardDate: null,
+                    creditCardDateRaw: null,
+                    creditCardNameDate: false,
+
+                    creditCardCvv: null,
+                    creditCardCvvValid: false,
+                {% endif %}
+
+
             },
             created: function () {
 
@@ -349,6 +373,44 @@
                     },
                 {% endif %}
 
+            },
+            watch: {
+                {% if page == 'checkout' %}
+                creditCardCvv: function (value) {
+                    if (value.toString().length >= 3) {
+                        this.creditCardCvvValid = true;
+                    } else {
+                        this.creditCardCvvValid = false;
+                    }
+                },
+                creditCardName: function (value) {
+                    if (value !== '') {
+                        this.creditCardNameValid = true;
+                    } else {
+                        this.creditCardNameValid = false;
+                    }
+                },
+                creditCardNumber: function (value) {
+                    this.creditCardNumberRaw = value.replace(/\s/g, "");
+                    if (value.toString()[0] === '4') {
+                        this.creditCardNumberFlag = 1;
+                    } else if (value.toString()[0] === '5') {
+                        this.creditCardNumberFlag = 2;
+                    } else {
+                        this.creditCardNumberFlag = 0;
+                    }
+                    if (this.creditCardNumberRaw.toString().length === 16) {
+                        if (this.creditCardNumberFlag !== 0) {
+                            this.creditCardNumberErro = false;
+                            this.creditCardNumberValid = true;
+                        } else {
+                            this.creditCardNumberErro = true;
+                        }
+                    } else {
+                        this.creditCardNumberValid = false;
+                    }
+                }
+            {% endif %}
             }
         });
         </script>

@@ -32,46 +32,55 @@
 
             <div class="col-sm-8">
                 <div class="mt-4 mt-sm-0">
-                    <h4 class="">Card Information</h4>
+                    <form class="row g-3 ">
+                        <h4 class="">Card Information</h4>
 
-                    <div class="row">
-
-                        <input class="input-credit-card" placeholder="Enter credit card number" />
 
                         <div class="col-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="cstCCNumber" id="cstCCNumber"
-                                       placeholder="name@example.com" value=""
-                                       onkeyup="cc_format('cstCCNumber','cstCCardType');">
-                                <label for="floatingInput">Card number</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="creditCardNumber" placeholder="Card Number"
+                                       v-maska="'#### #### #### ####'" v-model="creditCardNumber"
+                                       v-bind:class="[{ 'is-invalid': creditCardNumberErro, 'is-valid': creditCardNumberValid, }]"
+                                       required>
+                                <span class="input-group-text">
+                            <img v-if="creditCardNumberFlag === 2" src="'{% url 'images/card_mc.svg' %}" width="30px"/>
+                            <img v-else-if="creditCardNumberFlag === 1" src="{% url 'images/card_visa.svg' %}" width="30px"/>
+                            <div v-else style="width: 30px"><i class="far fa-credit-card"></i></div>
+                        </span>
                             </div>
                         </div>
 
                         <div class="col-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" >
-                                <label for="floatingInput">Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="creditCardName"
+                                       placeholder="Cardholder Name" v-model="creditCardName"
+                                       v-bind:class="[{ 'is-valid': creditCardNameValid, }]" required>
                             </div>
                         </div>
 
                         <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" >
-                                <label for="floatingInput">Validation Date</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="creditCardDate" placeholder="MM/YY"
+                                       v-maska="'##/##'" v-model="creditCardDate"
+                                       v-bind:class="[{ 'is-valid': creditCardDateValid, }]" required>
                             </div>
                         </div>
+
                         <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" >
-                                <label for="floatingInput">CVC</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="creditCardCvv" placeholder="CVV"
+                                       v-maska="'####'" v-model="creditCardCvv"
+                                       v-bind:class="[{ 'is-valid': creditCardCvvValid, }]" required>
                             </div>
                         </div>
 
-                        <div class="col">
-                        <input class="btn btn-primary" type="submit" value="Submit">
-                            </div>
+                        <h4 class="">Billing Information</h4>
 
-                    </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </form>
 
                 </div>
             </div>
