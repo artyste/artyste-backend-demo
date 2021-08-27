@@ -43,8 +43,8 @@
                                        v-bind:class="[{ 'is-invalid': creditCardNumberErro, 'is-valid': creditCardNumberValid, }]"
                                        required>
                                 <span class="input-group-text">
-                            <img v-if="creditCardNumberFlag === 2" src="'{% url 'images/card_mc.svg' %}" width="30px"/>
-                            <img v-else-if="creditCardNumberFlag === 1" src="{% url 'images/card_visa.svg' %}" width="30px"/>
+                            <img v-if="creditCardNumberFlag === 2" src="'{% static 'images/card_mc.svg' %}" width="30px"/>
+                            <img v-else-if="creditCardNumberFlag === 1" src="{% static 'images/card_visa.svg' %}" width="30px"/>
                             <div v-else style="width: 30px"><i class="far fa-credit-card"></i></div>
                         </span>
                             </div>
