@@ -36,6 +36,8 @@
 
                     <div class="row">
 
+                        <input class="input-credit-card" placeholder="Enter credit card number" />
+
                         <div class="col-12">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" name="cstCCNumber" id="cstCCNumber"
@@ -77,6 +79,13 @@
         </div>
 
     </div>
+
+    <script>
+    // credit card
+    const cleaveCreditCard = new Cleave('.input-credit-card', {
+        creditCard: true
+    });
+    </script>
 
 
 {% endblock %}
