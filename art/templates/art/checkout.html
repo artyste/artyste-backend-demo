@@ -31,14 +31,52 @@
             </div>
 
             <div class="col-sm-8">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td>{{ product.title }}</td>
+                        <td>{{ product.get_type_display }}</td>
+                        <td>{% if product.fiat == 0 %}[[ FormatedEthToUsd({{ product.price }}) ]] {% else %}${{ product.price }}{% endif %}</td>
+                    </tr>
+
+                    <tr>
+
+                        <td>Transfer</td>
+                        <td>Fee</td>
+                        <td>$10.00</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+
+                        <th scope="col"></th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                    </tfoot>
+                </table>
+
                 <div class="mt-4 mt-sm-0">
-                    <form class="row g-3 ">
+                    <form class="row g-3" @submit="checkForm" action="" method="POST">
+                        {% csrf_token %}
                         <h4 class="">Card Information</h4>
+
+                        <input type="text" v-model="creditCardTotal" id="creditCardTotal" name="creditCardTotal" value="" hidden >
+                        <input type="text" v-model="creditCardEncrypted" id="creditCardEncrypted" name="creditCardEncrypted" hidden >
 
 
                         <div class="col-12">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="creditCardNumber" placeholder="Card Number"
+                                <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber" placeholder="Card Number"
                                        v-maska="'#### #### #### ####'" v-model="creditCardNumber"
                                        v-bind:class="[{ 'is-invalid': creditCardNumberErro, 'is-valid': creditCardNumberValid, }]"
                                        required>
@@ -52,7 +90,7 @@
 
                         <div class="col-12">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="creditCardName"
+                                <input type="text" class="form-control" id="creditCardName" name="creditCardName"
                                        placeholder="Cardholder Name" v-model="creditCardName"
                                        v-bind:class="[{ 'is-valid': creditCardNameValid, }]" required>
                             </div>
@@ -60,7 +98,7 @@
 
                         <div class="col-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="creditCardDate" placeholder="MM/YY"
+                                <input type="text" class="form-control" id="creditCardDate" name="creditCardDate" placeholder="MM/YY"
                                        v-maska="'##/##'" v-model="creditCardDate"
                                        v-bind:class="[{ 'is-valid': creditCardDateValid, }]" required>
                             </div>
@@ -74,13 +112,66 @@
                             </div>
                         </div>
 
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input class="form-check-input me-2" type="checkbox" value="" id="creditCardSave" name="creditCardSave" checked>
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    Save this card
+                                </label>
+                            </div>
+                        </div>
+
                         <h4 class="">Billing Information</h4>
 
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="billingLine1" name="billingLine1"
+                                       placeholder="Street address" required>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="billingLine2" name="billingLine2"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="billingCountry" name="billingCountry"
+                                       placeholder="Country: US" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="billingdistrict" name="billingdistrict"
+                                       placeholder="District: FL" required>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="billingCity" name="billingCity"
+                                       placeholder="City: Miami" required>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="billingZip" name="billingZip"
+                                       placeholder="Postal / ZIP code" required>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <input type="submit" class="btn btn-primary">
                         </div>
 
                     </form>
+
+{#                    <button  v-on:click="checkForm" class="btn btn-primary">Teste</button>#}
 
                 </div>
             </div>
@@ -88,13 +179,6 @@
         </div>
 
     </div>
-
-    <script>
-    // credit card
-    const cleaveCreditCard = new Cleave('.input-credit-card', {
-        creditCard: true
-    });
-    </script>
 
 
 {% endblock %}

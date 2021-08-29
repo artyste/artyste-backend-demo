@@ -96,6 +96,60 @@ def pagecheckout(request, pk):
     context = {}
     artworks_get = product.objects.get(pk=pk)
 
+    if request.method == 'POST':
+
+        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+        UUIDGEN = uuid.uuid4()
+        url = "https://api-sandbox.circle.com/v1/cards"
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + CIRCLEAPIKEY
+        }
+
+        creditCardTotal = request.POST.get('creditCardTotal')
+        creditCardEncrypted = request.POST.get('creditCardEncrypted')
+        creditCardName = request.POST.get('creditCardName')
+        creditCardDate = request.POST.get('creditCardDate')
+        billingLine1 = request.POST.get('billingLine1')
+        billingLine2 = request.POST.get('billingLine2')
+        billingCountry = request.POST.get('billingCountry')
+        billingdistrict = request.POST.get('billingdistrict')
+        billingCity = request.POST.get('billingCity')
+        billingZip = request.POST.get('billingZip')
+
+        creditCardDateYYYY = int('20' + creditCardDate[-2:])
+        creditCardDateMM = int(creditCardDate[:2])
+        print(creditCardDateMM)
+        print(creditCardDateYYYY)
+
+        payload = {
+            "idempotencyKey": str(UUIDGEN),
+            "expMonth": creditCardDateMM,
+            "expYear": creditCardDateYYYY,
+            "keyId": "key1",
+            "encryptedData": creditCardEncrypted,
+            "billingDetails": {
+                "name": creditCardName,
+                "country": billingCountry,
+                "district": billingdistrict,
+                "line1": billingLine1,
+                "line2": billingLine2,
+                "city": billingCity,
+                "postalCode": billingZip
+            },
+            "metadata": {
+                "email": "customer-0001@circle.com",
+                "phoneNumber": "+12025550180",
+                "sessionId": "xxx",
+                "ipAddress": "172.33.222.1"
+            }
+        }
+        response = requests.post(url, json=payload, headers=headers )
+        responseJson = response.json()
+        print(responseJson)
+
     context['product'] = artworks_get
     context['page'] = 'checkout'
     return render(request, 'art/checkout.html', context)

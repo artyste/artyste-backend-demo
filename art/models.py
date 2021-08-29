@@ -36,6 +36,10 @@ class product(models.Model):
         (0, 'Ethereum'),
         (1, 'U.S. Dollar'),
     ]
+    TYPE_STATUS = [
+        (0, 'Digital'),
+        (1, 'Physical'),
+    ]
     MINTING_STATUS = [
         (0, 'No Minted'),
         (1, 'Subimited to Blockchain'),
@@ -43,6 +47,7 @@ class product(models.Model):
     ]
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
+    type = models.IntegerField('Typw', choices=TYPE_STATUS, default=0)
     owner = models.ForeignKey(UserAccount, related_name='owner', on_delete=models.SET_NULL, blank=True, null=True)
     artist = models.ForeignKey(UserAccount, on_delete=models.SET_NULL, blank=True, null=True)
     gallery = models.ForeignKey(gallery, on_delete=models.SET_NULL, blank=True, null=True)
