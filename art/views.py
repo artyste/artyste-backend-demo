@@ -70,6 +70,7 @@ def pageartworksnew(request):
         if form.is_valid():
             new_artwork = form.save(commit=False)
             new_artwork.artist = user
+            new_artwork.owner = user
             new_artwork.save()
             return redirect('artworks')
 
