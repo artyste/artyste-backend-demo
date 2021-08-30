@@ -23,14 +23,11 @@ def pagehome(request):
 
     try:
         CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
-
         url = 'https://api-sandbox.circle.com/v1/wallets/' + request.user.circle_walletId
-
         headers = {
             'Accept': 'application/json',
             'Authorization': "Bearer " + CIRCLEAPIKEY,
         }
-
         response = requests.get(url, headers=headers)
         responseJson = response.json()
         print(responseJson)

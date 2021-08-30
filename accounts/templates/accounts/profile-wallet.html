@@ -12,7 +12,7 @@
 <div class="container">
 
     <div class="mt-4">
-        <h1 class="h4 align-text-bottom">Wallet - {{ profile.first_name }}</h1>
+        <h1 class="h4 align-text-bottom">Wallet - ID {{ profile.circle_walletId }}</h1>
         <hr class="mt-2"/>
     </div>
 
@@ -21,10 +21,21 @@
     <div class="col-12">
 
         <div class="mt-4">
+        <h2 class="h6 align-text-bottom">Funds</h2>
+        <hr class="mt-2"/>
+
+        <div>
+            <h5>{% if circle %}US$ {{ circle }}{% endif %}</h5>
+        </div>
+
+
+
+        <div class="mt-4">
         <h2 class="h6 align-text-bottom">My Cards</h2>
         <hr class="mt-2"/>
 
         <div class="row row-cols-1 row-cols-lg-2 g-4">
+
             {% for card in cards %}
 
                 <div class="col">
