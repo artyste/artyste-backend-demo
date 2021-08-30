@@ -68,6 +68,7 @@ class product(models.Model):
 
     visible = models.BooleanField(default=False)
     publish = models.BooleanField(default=False)
+    sold = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -82,6 +83,10 @@ class transaction(models.Model):
         (0, 'Ethereum'),
         (1, 'U.S. Dollar'),
     ]
+    GATE_STATUS = [
+        (0, 'MetaMask'),
+        (1, 'Circle CreditCard'),
+    ]
     TRANS_STATUS = [
         (0, 'Created'),
         (1, 'Succeeded'),
@@ -90,14 +95,16 @@ class transaction(models.Model):
     ]
     product = models.ForeignKey(product, on_delete=models.SET_NULL, null=True)
     client = models.ForeignKey(UserAccount, on_delete=models.SET_NULL, null=True)
-    status = models.IntegerField('Fiat', choices=TRANS_STATUS, default=0)
+    status = models.IntegerField('Status', choices=TRANS_STATUS, default=0)
     fiat = models.IntegerField('Fiat', choices=FIAT_STATUS, default=0)
     price = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    txid = models.CharField('Transaction ID', max_length=255, blank=True, null=True)
+    gateway = models.IntegerField('Payment Gateway', choices=GATE_STATUS, default=0)
 
     def __str__(self):
-        return self.product
+        return self.product.title
 
 class collection(models.Model):
     name = models.CharField(max_length=255)

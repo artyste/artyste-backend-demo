@@ -36,6 +36,8 @@
                                     <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>
                                 </div>
                                 <div class="col-6 text-end">
+
+                                    {% if not artwork.sold %}
                                     <div class="mb-0 ">
                                         <div>Price</div>
                                         <div class="h6">{% if artwork.fiat == 0 %}
@@ -47,7 +49,12 @@
                                     <div class="text-muted small" v-cloak><span
                                             class="v-cloak--hidden ">{% if artwork.fiat == 0 %} [[ FormatedEthToUsd(
                                         {{ artwork.price }}) ]] {% else %}ETH [[ FormatedUsdToEth({{ artwork.price }})
-                                        ]] {% endif %}</span></div>
+                                        ]] {% endif %}</span>
+                                    </div>
+                                    {% else %}
+                                        <h6 class="text-danger">SOLD</h6>
+                                    {% endif %}
+
                                 </div>
                             </div>
 

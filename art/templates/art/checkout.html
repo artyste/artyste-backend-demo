@@ -52,7 +52,7 @@
 
                         <td>Transfer</td>
                         <td>Fee</td>
-                        <td>$10.00</td>
+                        <td>$0.00</td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -60,7 +60,7 @@
 
                         <th scope="col"></th>
                         <th scope="col">Total</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">$</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -70,14 +70,14 @@
                         {% csrf_token %}
                         <h4 class="">Card Information</h4>
 
-                        <input type="text" v-model="creditCardTotal" id="creditCardTotal" name="creditCardTotal" value="" hidden >
-                        <input type="text" v-model="creditCardEncrypted" id="creditCardEncrypted" name="creditCardEncrypted" hidden >
+                        <input type="text" v-model="creditCardTotal" id="creditCardTotal" name="creditCardTotal" value="" hidden>
+                        <input type="text" v-model="creditCardEncrypted" id="creditCardEncrypted" name="creditCardEncrypted" hidden>
 
 
                         <div class="col-12">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber" placeholder="Card Number"
-                                       v-maska="'#### #### #### ####'" v-model="creditCardNumber"
+                                       v-maska="'#### #### #### ####'" v-model="creditCardNumber" maxlength="19"
                                        v-bind:class="[{ 'is-invalid': creditCardNumberErro, 'is-valid': creditCardNumberValid, }]"
                                        required>
                                 <span class="input-group-text">
@@ -107,7 +107,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="creditCardCvv" placeholder="CVV"
-                                       v-maska="'####'" v-model="creditCardCvv"
+                                       v-maska="'####'" v-model="creditCardCvv"  maxlength="4"
                                        v-bind:class="[{ 'is-valid': creditCardCvvValid, }]" required>
                             </div>
                         </div>
@@ -147,7 +147,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="billingdistrict" name="billingdistrict"
-                                       placeholder="District: FL" required>
+                                       placeholder="State: FL" required>
                             </div>
                         </div>
 

@@ -9,8 +9,7 @@
 
 
 {% block body %}
-
-<div id="app">
+<div class="container">
 
     <div class="mt-4">
         <h1 class="h4 align-text-bottom">Mint</h1>
@@ -71,205 +70,42 @@
   </tbody>
 </table>
 
+        <div v-cloak>
+                  <span class="v-cloak--inline">
+                      <button class="btn btn-secondary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span class="visually-hidden">Loading...</span>
+</button>
+                </span>
+
+            <span v-show="!connected">
+                      <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
+                          <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
+                           Connect
+                      </a>
+                </span>
+
+            <span v-show="connected">
+                     <a v-on:click="Transaction" class=" btn btn-success enableEthereumButton v-cloak--hidden" type="submit">Mint!</a>
+                     </span>
+        </div>
 
 
-        <div v-if="connected">
-        <button v-on:click="Transaction" class=" btn btn-success enableEthereumButton" type="submit">Mint!</button>
-    </div>
-    <div v-else>
-        <button v-on:click="getAccount" class=" btn btn-danger enableEthereumButton" type="submit">Connect your Wallet!</button>
-    </div>
+{#        <div v-if="!connected">#}
+{#        <button v-on:click="Transaction" class=" btn btn-success enableEthereumButton" type="submit">Mint!</button>#}
+{#    </div>#}
+{#    <div v-else>#}
+{#        <button v-on:click="metaConnect" class=" btn btn-danger enableEthereumButton" type="submit">Connect your Wallet!</button>#}
+{#    </div>#}
 
 {#        <button v-on:click="fpost" class=" btn btn-danger enableEthereumButton" type="submit">Connect your Wallet!</button>#}
 
     </div>
     </div>
-
-
-
-
-
-
-
-
 </div>
 
 
-<script src="{% static '/js/ethers-5.2.min.js' %}" type="application/javascript"></script>
 
-<script type="module">
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    const csrftoken = getCookie('csrftoken');
-
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    const imgurl = 'https://bafkreif4rzclduw5zu6d4uswwg6o5jzchk4zxmqcbwl5j6trrhpv24qpfu.ipfs.dweb.link/';
-    const contractABI = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"string","name":"tokenURI","type":"string"}],"name":"mintNFT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}]';
-
-
-
-    const contractAddress = "0x4C4a07F737Bf57F6632B6CAB089B78f62385aCaE";
-    const contract = new ethers.Contract(contractAddress, contractABI, signer);
-
-    {#console.log(contract);#}
-    {#console.log(ethers);#}
-    {#console.log(provider);#}
-
-
-    ethereum.on('chainChanged', (chainId) => {
-        console.log(chainId);
-        app.contchainChange(chainId);
-    });
-
-    ethereum.on('accountsChanged', (accounts) => {
-        console.log(accounts);
-    });
-
-    var app = new Vue({
-        delimiters: ['[[', ']]'],
-        el: '#app',
-        data: {
-            accounts: [],
-            account: '',
-            message: 'Connect your wallet to get start!',
-            connected: false,
-            chainID: '',
-            provider: false,
-            balance: null,
-            tx: null,
-            imgcid: '{{ product.filehash }}',
-            imgcidurl: 'https://{{ product.filehash }}.ipfs.dweb.link/',
-            art_name: '{{ product.title }}',
-            art_Artist: '{{ product.artist.first_name }} {{ product.artist.last_name }}',
-            meta_cid: null,
-
-        },
-        created: function () {
-
-        },
-        methods: {
-            metaConnect: function (event) {
-                this.getAccount();
-            },
-            getAccount: async function () {
-                this.accounts = await ethereum.request({method: 'eth_requestAccounts'});
-                await this.connect();
-            },
-            connect: async function () {
-                this.account = this.accounts[0].slice(0, 4) + '...' + this.accounts[0].slice(-4);
-                this.connected = true;
-                this.message = "Wallet Connected";
-
-            },
-            contchainChange: function (chainId) {
-                console.log(chainId);
-                this.chainID = chainId;
-            },
-
-            Transaction: async function () {
-
-                const meta_json = {
-                        "name": '{{ product.title }}',
-                        "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
-                        "description": '{{ product.description }}',
-                    };
-
-                fetch("https://api.nft.storage/upload", {
-                    method: 'POST',
-                    body: JSON.stringify(meta_json),
-                    headers: {
-                        'accept': 'application/json',
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0OEI2NjBkMUQ3MEZGNDk1MjYzNjZDMkNDZERFNTExMzZFNWQ1NDEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODY2NzY0NjE4NywibmFtZSI6IlRlc3QifQ.MVf1uJHqsLPX6HTnZRrSi4VZYfJyS7zS1hNTiqCMUpg',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then(response => {
-
-                        response.json().then(async data => {
-                            this.meta_cid = data['value']['cid'];
-
-                            const metadata = 'https://' + data['value']['cid'] + '.ipfs.dweb.link';
-                            console.log(metadata);
-
-                            await contract.mintNFT(this.accounts[0], metadata).then( res => {
-                                console.log(res);
-                                console.log(res.hash);
-
-                                fetch("{% url 'artworks-mint' pk=product.id %}", {
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        'tx': res.hash.toString(),
-                                        'pk': {{ product.id }},
-                                    }),
-                                    headers: {
-                                        'Accept': 'application/json, text/plain, */*',
-                                        'Content-Type': 'application/json',
-                                        "X-CSRFToken": csrftoken,
-                                    },
-                                });
-                                window.location.href = "{% url 'artworks-detail' pk=product.id %}";
-                            });
-
-
-
-
-                        });
-
-                    })
-
-                if (this.meta_cid){
-                    const metadata = 'https://' + this.meta_cid + '.ipfs.dweb.link/';
-                    console.log(metadata)
-                }
-
-
-
-
-
-
-
-
-
-
-            },
-
-            fpost: function () {
-                    fetch("{% url 'artworks-mint' pk=product.id %}", {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            'tx': 1,
-                            'pk': {{ product.pk }},
-                        }),
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': 'application/json',
-                            "X-CSRFToken": csrftoken,
-                        },
-                    });
-                    {#window.location.href = "{% url 'artworks-detail' pk=product.id %}";#}
-            },
-
-        },
-
-    });
-</script>
 
 
 {% endblock %}

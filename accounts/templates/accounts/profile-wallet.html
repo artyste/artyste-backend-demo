@@ -1,0 +1,71 @@
+{% extends 'art/base.html' %}
+{% load static %}
+
+{% block header %}
+<title>Profile - Wallet - Arthology</title>
+{#    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+
+    <div class="mt-4">
+        <h1 class="h4 align-text-bottom">Wallet - {{ profile.first_name }}</h1>
+        <hr class="mt-2"/>
+    </div>
+
+
+    <div class="row">
+    <div class="col-12">
+
+        <div class="mt-4">
+        <h2 class="h6 align-text-bottom">My Cards</h2>
+        <hr class="mt-2"/>
+
+        <div class="row row-cols-1 row-cols-lg-2 g-4">
+            {% for card in cards %}
+
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <h5 class="card-title">{{ card.get_flag_display }}</h5>
+                                <hr class="mt-2"/>
+                                <div class="col-6">
+                                    {% if card.flag == 0 %}
+                                        <img src="{% static 'images/card_visa.svg' %}" width="64px" />
+                                    {% else %}
+                                         <img src="{% static 'images/card_mc.svg' %}" width="64px" />
+                                    {% endif %}
+                                </div>
+                                <div class="col-6">
+                                    XXXX - XXXX - XXXX - {{ card.last }}
+                                </div>
+                                <div class="col-12 text-end">
+                                    <a class="btn btn-primary">Edit</a>
+                                    <a class="btn btn-secondary">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </div>
+
+
+
+
+            {% endfor %}
+         </div>
+
+
+    </div>
+
+    </div>
+    </div>
+
+
+
+
+</div>
+{% endblock %}

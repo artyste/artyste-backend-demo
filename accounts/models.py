@@ -56,3 +56,14 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class card(models.Model):
+    CARD_FLAG = [
+        (0, 'Visa'),
+        (1, 'Mastercard'),
+    ]
+    user = models.ForeignKey(UserAccount, on_delete=models.SET_NULL, null=True)
+    cardid = models.CharField(max_length=255, blank=True, null=True)
+    flag = models.IntegerField('Card Flag', choices=CARD_FLAG, default=0)
+    last = models.CharField(max_length=32, blank=True, null=True)
+    cvv = models.CharField(max_length=255, blank=True, null=True)

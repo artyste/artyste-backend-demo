@@ -12,4 +12,5 @@ urlpatterns = [
     path('artworks/mint/<int:pk>/', views.pageproductmint, name='artworks-mint'),
     path('gallery/<slug:slug>/', views.pagegallerydetail.as_view(), name='gallery-detail'),
     path('galleries/', views.pagegalleries, name='galleries'),
+    path('transactions/<int:pk>/', views.pagetxdetail, name='transaction-detail'),
 ]

@@ -1,0 +1,68 @@
+{% extends 'art/base.html' %}
+{% load static %}
+
+{% block header %}
+<title>{{ transaction.product.title }} - Transaction - Arthology</title>
+{#    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+
+    <div class="mt-4">
+        <h1 class="h4 align-text-bottom">Transaction - {{ transaction.product.title }} - {{ transaction.id }}</h1>
+
+        <hr class="mt-2"/>
+    </div>
+
+
+
+    <div class="row">
+    <div class="col-4">
+
+        <div class="img-thumbnail border-0">
+                <img src="{{ transaction.product.fileimage.url }}" class="card-img-top">
+            </div>
+
+
+
+    </div>
+    <div class="col-8">
+
+        <h2 class="h6 align-text-bottom">Id: {{ transaction.txid }}</h2>
+<hr class="mt-2"/>
+<table class="table">
+
+  <tbody>
+      <tr>
+      <th scope="row">Status</th>
+        <td>{{ transaction.get_status_display }}</td>
+    </tr>
+    <tr>
+      <th scope="row" class="col-2">Title</th>
+      <td class="">{{ transaction.product.title }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Artist</th>
+        <td>{{ transaction.product.artist.first_name }} {{ transaction.product.artist.last_name }}</td>
+    </tr>
+
+      <th scope="row">Price</th>
+        <td>{{ transaction.price }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+{#        <button v-on:click="fpost" class=" btn btn-danger enableEthereumButton" type="submit">Connect your Wallet!</button>#}
+
+    </div>
+    </div>
+
+
+
+
+</div>
+{% endblock %}

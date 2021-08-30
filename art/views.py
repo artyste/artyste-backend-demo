@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-from .models import product, gallery
+from .models import product, gallery, transaction
+from accounts.models import card
 from .forms import productForm
 from django.views.generic.detail import DetailView
 import json
@@ -100,7 +101,6 @@ def pagecheckout(request, pk):
 
         CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
         UUIDGEN = uuid.uuid4()
-        url = "https://api-sandbox.circle.com/v1/cards"
 
         headers = {
             "Accept": "application/json",
@@ -109,6 +109,7 @@ def pagecheckout(request, pk):
         }
 
         creditCardTotal = request.POST.get('creditCardTotal')
+        print(creditCardTotal)
         creditCardEncrypted = request.POST.get('creditCardEncrypted')
         creditCardName = request.POST.get('creditCardName')
         creditCardDate = request.POST.get('creditCardDate')
@@ -119,16 +120,24 @@ def pagecheckout(request, pk):
         billingCity = request.POST.get('billingCity')
         billingZip = request.POST.get('billingZip')
 
+        print(creditCardEncrypted)
+
         creditCardDateYYYY = int('20' + creditCardDate[-2:])
         creditCardDateMM = int(creditCardDate[:2])
         print(creditCardDateMM)
         print(creditCardDateYYYY)
 
-        payload = {
+        keyid = 'key1'
+        sessionId = 'xxx'
+        ipAddress = '172.33.222.1'
+        email = 'customer-0001@circle.com'
+        phoneNumber = '+12025550180'
+
+        payloadCard = {
             "idempotencyKey": str(UUIDGEN),
             "expMonth": creditCardDateMM,
             "expYear": creditCardDateYYYY,
-            "keyId": "key1",
+            "keyId": keyid,
             "encryptedData": creditCardEncrypted,
             "billingDetails": {
                 "name": creditCardName,
@@ -140,19 +149,101 @@ def pagecheckout(request, pk):
                 "postalCode": billingZip
             },
             "metadata": {
-                "email": "customer-0001@circle.com",
-                "phoneNumber": "+12025550180",
-                "sessionId": "xxx",
-                "ipAddress": "172.33.222.1"
+                "email": email,
+                "phoneNumber": phoneNumber,
+                "sessionId": sessionId,
+                "ipAddress": ipAddress
             }
         }
-        response = requests.post(url, json=payload, headers=headers )
-        responseJson = response.json()
-        print(responseJson)
+
+        try:
+            urlCard = "https://api-sandbox.circle.com/v1/cards"
+            responseCard = requests.post(urlCard, json=payloadCard, headers=headers)
+            responseCardJson = responseCard.json()
+
+            if responseCardJson['data']:
+                print('Card Created')
+                print(responseCardJson)
+
+                if responseCardJson['data']['network'] == 'VISA':
+                    cardflag = 0
+                else:
+                    cardflag = 1
+
+                cardnew = card(
+                    user=request.user,
+                    cardid=responseCardJson['data']['id'],
+                    flag=cardflag,
+                    last=responseCardJson['data']['last4'],
+                )
+                cardnew.save()
+
+
+
+                payloadtx = {
+                    "metadata": {
+                        "email": email,
+                        "sessionId": sessionId,
+                        "ipAddress": ipAddress,
+                        "phoneNumber": phoneNumber
+                    },
+                    "amount": {
+                        "amount": str(creditCardTotal),
+                        "currency": "USD"
+                    },
+                    "source": {
+                        "type": "card",
+                        "id": responseCardJson['data']['id']
+                    },
+                    "verification": "none",
+                    "idempotencyKey": str(UUIDGEN),
+                    "keyId": keyid,
+                    "description": artworks_get.title
+                }
+
+                urlTx = "https://api-sandbox.circle.com/v1/payments"
+                responseTx = requests.post(urlTx, json=payloadtx, headers=headers)
+                responseTxJson = responseTx.json()
+                print(responseTxJson)
+
+                if responseTxJson['data']:
+                    print('Transaction Created')
+
+
+                    txnew = transaction(
+                        product=artworks_get,
+                        client=request.user,
+                        status=3,
+                        fiat=artworks_get.fiat,
+                        price=creditCardTotal,
+                        txid=responseTxJson['data']['id'],
+                        gateway=1,
+                    )
+                    txnew.save()
+
+                    artworks_get.sold = True
+                    artworks_get.save()
+
+                    return redirect('transaction-detail', txnew.id)
+
+                else:
+                    print('Error - Transaction')
+                    print(responseTxJson['code'])
+
+            else:
+                print('Error - Creation Card')
+                print(responseCardJson['code'])
+
+        except:
+            pass
 
     context['product'] = artworks_get
     context['page'] = 'checkout'
-    return render(request, 'art/checkout.html', context)
+
+    if artworks_get.sold == True:
+        return redirect('artworks-detail', pk)
+    else:
+        return render(request, 'art/checkout.html', context)
 
 class pagegallerydetail(DetailView):
     model = gallery
@@ -174,5 +265,32 @@ def pageproductmint(request, pk):
         artworks_get.save()
 
     context['product'] = artworks_get
-    context['page'] = 'productmint'
+    context['page'] = 'mint'
     return render(request, 'art/mint.html', context)
+
+def pagetxdetail(request, pk):
+    context = {}
+    print(pk)
+    tx_get = transaction.objects.get(pk=pk)
+
+    if tx_get.status == 3:
+        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+        headers = {
+            "Accept": "application/json",
+            "Authorization": "Bearer " + CIRCLEAPIKEY
+        }
+
+        urltx = "https://api-sandbox.circle.com/v1/payments/" + tx_get.txid
+        responseTx = requests.get(urltx, headers=headers)
+        responseTxJson = responseTx.json()
+        if responseTxJson['data']:
+
+            if responseTxJson['data']['status'] == 'confirmed':
+                tx_get.status = 1
+                tx_get.product.owner = tx_get.client
+                tx_get.save()
+                tx_get.product.save()
+
+    context['transaction'] = tx_get
+    context['page'] = 'transaction-details'
+    return render(request, 'art/transaction-detail.html', context)

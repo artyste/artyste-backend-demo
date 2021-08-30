@@ -3,6 +3,7 @@ from .form import LoginCustomUserForm, CreateCustomUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .decorators import unauthenticated_user, authenticated_user
+from .models import card
 
 # Create your views here.
 @unauthenticated_user
@@ -45,3 +46,11 @@ def registeruser(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def profilewallet(request):
+    context = {}
+    context['profile'] = request.user
+    context['cards'] = card.objects.filter(user=request.user)
+
+
+    return render(request, 'accounts/profile-wallet.html', context)
