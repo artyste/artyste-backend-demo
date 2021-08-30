@@ -45,12 +45,13 @@
                                 <div class="card-body">
 
                             <div class="row">
-                                {% if not artwork.sold %}
+
                                 <div class="col-6">
                                     <div class="fw-bold">{{ artwork.title }}</div>
                                     <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>
                                 </div>
                                 <div class="col-6 text-end">
+                                {% if not artwork.sold %}
                                     <div class="mb-0 ">
                                         <div>Price</div>
                                         <div class="h6">{% if artwork.fiat == 0 %}
@@ -64,10 +65,11 @@
                                         {{ artwork.price }}) ]] {% else %}ETH [[ FormatedUsdToEth({{ artwork.price }})
                                         ]] {% endif %}</span>
                                     </div>
-                                </div>
-                            {% else %}
+                                {% else %}
                                         <h6 class="text-danger">SOLD</h6>
                                     {% endif %}
+                                </div>
+
 
                             </div>
 
