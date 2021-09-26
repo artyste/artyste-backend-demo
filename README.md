@@ -10,15 +10,15 @@ https://api.artyste.info/v1/
 ### Test Users
 
 Artist\
-Email: artist@arthology.io\
+Email: artist@artyste.io\
 Pass: Arth2021
 
-Curator / Gallery\
-Email: curator@arthology.io\
+Gallery\
+Email: gallery@artyste.io\
 Pass: Arth2021
 
 User / Costumer\
-Email: user@arthology.io\
+Email: user@artyste.io\
 Pass: Arth2021
 
 ### VR Module's Repository
