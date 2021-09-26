@@ -1,7 +1,11 @@
-# Arthology API
+# Artyste Demo API
 
 ### Front-end
-https://app.arthology.io
+https://demo.artyste.io
+
+### Backend-end
+Plataform API EndPoint\
+https://api.artyste.info/v1/
 
 ### Test Users
 
@@ -19,12 +23,12 @@ Pass: Arth2021
 
 ### VR Module's Repository
 
-https://github.com/arthology-io/arthology-vr
+https://github.com/artyste/artyste-virtual
 
 ### User Auth API
 
 Create New User\
-POST - https://api.arthology.io/auth/users/
+POST - https://api.artyste.info/auth/users/
 ```json
 {
     "email": "",
@@ -35,7 +39,7 @@ POST - https://api.arthology.io/auth/users/
 }
 ```
 New User Account Activation\
-POST - https://api.arthology.io/auth/users/activation/
+POST - https://api.artyste.info/auth/users/activation/
 ```json
 {
     "uid": "",
@@ -43,7 +47,7 @@ POST - https://api.arthology.io/auth/users/activation/
 }
 ```
 Get Json Web Tokens - Jwt Create\
-POST - https://api.arthology.io/auth/jwt/create/
+POST - https://api.artyste.info/auth/jwt/create/
 ```json
 {
     "email": "",
@@ -51,12 +55,9 @@ POST - https://api.arthology.io/auth/jwt/create/
 }
 ```
 Get New Access Token - Jwt Refresh\
-POST - https://api.arthology.io/auth/jwt/refresh/
+POST - https://api.artyste.info/auth/jwt/refresh/
 ```json
 {
     "refresh": ""
 }
 ```
-### Plataform API
-Plataform API EndPoint\
-GET - https://api.arthology.io/v1/
