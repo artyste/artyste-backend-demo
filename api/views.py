@@ -9,8 +9,14 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 def apiEndPoint(requests):
     return JsonResponse('API EndPoint', safe=False)# Create your views here.
 
-def apiGalleryList(requests):
-    return JsonResponse('Gallery List', safe=False)
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def apiGalleriesList(requests):
+    gallery_get = gallery.objects.all()
+    serializer = gallerySerializers(gallery_get, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 @authentication_classes([])
