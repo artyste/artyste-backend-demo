@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('ARTHOLOGY_DJANGO')
+SECRET_KEY = os.environ.get('ARTYSTEDEMO_DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('DJANGO') == '0':
@@ -38,11 +38,11 @@ try:
         timeout=0.01).text
 except requests.exceptions.RequestException:
     pass
-    print(' @ Arthology - Fail to add EC2 ip on the list')
+    print(' @ ARTYSTEDEMO - Fail to add EC2 ip on the list')
 
 if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
-    print(' @ Arthology - ALLOWED_HOSTS')
+    print(' @ ARTYSTEDEMO - ALLOWED_HOSTS')
     print(ALLOWED_HOSTS)
 
 
@@ -115,7 +115,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'arthologyrds',
-        'PASSWORD': os.environ.get('ARTHOLOGY_RDS_PASS'),
+        'PASSWORD': os.environ.get('ARTYSTEDEMO_RDS_PASS'),
         'HOST': 'aari593mi3bwct.cs2cibp8vxrp.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }
@@ -124,7 +124,7 @@ DATABASES = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'admin@arthology.io'
+EMAIL_HOST_USER = 'admin@artyste.io'
 EMAIL_HOST_PASSWORD = 'RG8UpVWag6TY0k1P'
 EMAIL_USE_TLS = True
 
@@ -177,9 +177,9 @@ USE_TZ = True
 
 
 
-AWS_ACCESS_KEY_ID = os.environ.get('ARTHOLOGY_AWS_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('ARTHOLOGY_AWS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'arthology-files'
+AWS_ACCESS_KEY_ID = os.environ.get('ARTYSTEDEMO_AWS_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('ARTYSTEDEMO_AWS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'artyste-demo'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
@@ -217,7 +217,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
 }
 DOMAIN = ('localhost:3000')
-SITE_NAME = ('Arthology')
+SITE_NAME = ('artyste')
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,

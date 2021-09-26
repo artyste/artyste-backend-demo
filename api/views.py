@@ -7,7 +7,12 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 
 # Create your views here.
 def apiEndPoint(requests):
-    return JsonResponse('API EndPoint', safe=False)# Create your views here.
+
+    apiendpoint = {}
+    apiendpoint['Galleries List'] = 'galleries-list/'
+    apiendpoint['Galery Detail'] = 'gallery/<slug:slug>/'
+
+    return JsonResponse(apiendpoint, safe=False)# Create your views here.
 
 @api_view(['GET'])
 @authentication_classes([])
