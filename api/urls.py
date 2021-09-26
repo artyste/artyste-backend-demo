@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.apiEndPoint, name='api-end-point'),
-    path('gallery-list/', views.apiGalleriesList, name='api-gallery-list'),
+    path('galleries-list/', views.apiGalleriesList, name='api-galleries-list'),
     path('gallery/<slug:slug>/', views.apiGalleryDetail, name='api-gallery'),
 ]
