@@ -37,3 +37,20 @@ def apiGalleryDetail(requests, slug):
         'banner': gallery_get.imgbabner.url,
     }})
     return Response(new_serializer_data)
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def apiAssetsList(requests):
+    artwork_get = product.objects.all().order_by('created_at').reverse()
+    serializer = productSerializers(artwork_get, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def apiAsset(requests, pk):
+    artwork_get = product.objects.filter(pk=pk)
+    serializer = productSerializers(artwork_get, many=True)
+    return Response(serializer.data)
