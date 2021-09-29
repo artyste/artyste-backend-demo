@@ -73,6 +73,17 @@ class product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def extra_artistFirstName(self):
+        try:
+            return self.artist.first_name
+        except:
+            return ''
+
+    def extra_artistLastName(self):
+        try:
+            return self.artist.last_name
+        except:
+            return ''
 
     def __str__(self):
         return self.title

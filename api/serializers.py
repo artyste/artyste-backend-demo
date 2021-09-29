@@ -7,8 +7,12 @@ class gallerySerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 class productSerializers(serializers.ModelSerializer):
-    my_field2 = serializers.ReadOnlyField(source='my_field')
+    artistFirstName = serializers.ReadOnlyField(source='extra_artistFirstName')
+    artistLastName = serializers.ReadOnlyField(source='extra_artistLastName')
 
     class Meta:
         model = product
         fields = '__all__'
+        read_only_fields = (
+            'artistFirstName', 'artistLastName',
+        )
