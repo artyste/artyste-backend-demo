@@ -35,6 +35,7 @@ class product(models.Model):
     FIAT_STATUS = [
         (0, 'Ethereum'),
         (1, 'U.S. Dollar'),
+        (2, 'Solana'),
     ]
     TYPE_STATUS = [
         (0, 'Digital'),
