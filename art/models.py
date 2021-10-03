@@ -18,18 +18,31 @@ def gallery_directory_path(instance, filename):
     return 'galleries/{0}/{1}'.format(str(instance.id), str(instance.id) + '_' + str(timenow) + extention[-1])
 
 
+class virtualGallery(models.Model):
+    name = models.CharField(max_length=255)
+    file = models.FileField(upload_to='virtualGallery/', blank=True, null=True)
+
 class gallery(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     imglogo = models.ImageField('Imagem Logo', upload_to=gallery_directory_path, blank=True, null=True)
     imgbabner = models.ImageField('Imagem Banner', upload_to=gallery_directory_path, blank=True, null=True)
+    virtual = models.ForeignKey(virtualGallery, on_delete=models.DO_NOTHING, null=True)
     admin = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
+
+    def extra_virtualFile(self):
+        try:
+            return self.virtual.file
+        except:
+            return ''
 
     def get_absolute_url(self):
         return '/%s/' % self.slug
 
     def __str__(self):
         return self.name
+
+
 
 class product(models.Model):
     FIAT_STATUS = [

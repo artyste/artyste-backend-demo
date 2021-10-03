@@ -35,6 +35,7 @@ def apiGalleryDetail(requests, slug):
         'name': gallery_get.name,
         'avatar': gallery_get.imglogo.url,
         'banner': gallery_get.imgbabner.url,
+        'virtual': gallery_get.virtual.id,
     }})
     return Response(new_serializer_data)
 
