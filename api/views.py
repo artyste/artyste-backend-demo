@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .serializers import gallerySerializers, productSerializers
+from .serializers import gallerySerializers, productSerializers, userSerializers
 from rest_framework.response import Response
 from art.models import gallery, product
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from accounts.models import UserAccount
 
 # Create your views here.
 def apiEndPoint(requests):
@@ -54,4 +55,13 @@ def apiAssetsList(requests):
 def apiAsset(requests, pk):
     artwork_get = product.objects.filter(pk=pk)
     serializer = productSerializers(artwork_get, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def apiUser(requests, pk):
+    user_get = UserAccount.objects.filter(pk=pk)
+    serializer = userSerializers(user_get, many=True)
     return Response(serializer.data)

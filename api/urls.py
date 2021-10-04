@@ -7,4 +7,5 @@ urlpatterns = [
     path('asset/<int:pk>/', views.apiAsset, name='api-asset'),
     path('galleries-list/', views.apiGalleriesList, name='api-galleries-list'),
     path('gallery/<slug:slug>/', views.apiGalleryDetail, name='api-gallery'),
+    path('user/<int:pk>/', views.apiUser, name='api-user'),
 ]
