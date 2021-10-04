@@ -10,7 +10,7 @@ class gallerySerializers(serializers.ModelSerializer):
 class userSerializers(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        exclude = ['password']
+        fields = '__all__'
 
 class productSerializers(serializers.ModelSerializer):
     artistFirstName = serializers.ReadOnlyField(source='extra_artistFirstName')
