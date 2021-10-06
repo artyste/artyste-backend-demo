@@ -44,7 +44,10 @@
                                             <img class="me-2" src="{% static 'images/eth_logo.svg' %}"
                                                  height="20px"/>{% else %}
                                             <img class="me-2" src="{% static 'images/dollar.svg' %}"
-                                                 width="20px"/>{% endif %}{{ artwork.price }}</div>
+                                                 width="20px"/>{% else %}
+                                            <img class="me-2" src="{% static 'images/solana-logo.svg' %}"
+                                                 height="20px"/>{% endif %}{{ artwork.price }}
+                                        </div>
                                     </div>
                                     <div class="text-muted small" v-cloak><span
                                             class="v-cloak--hidden ">{% if artwork.fiat == 0 %} [[ FormatedEthToUsd(
