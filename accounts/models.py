@@ -43,6 +43,8 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     circle_entityId = models.CharField(max_length=255, blank=True, null=True)
     circle_chainETH = models.CharField(max_length=255, blank=True, null=True)
 
+    description = models.TextField(null=True, blank=True)
+
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'

@@ -27,6 +27,7 @@ class gallery(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     imglogo = models.ImageField('Imagem Logo', upload_to=gallery_directory_path, blank=True, null=True)
     imgbabner = models.ImageField('Imagem Banner', upload_to=gallery_directory_path, blank=True, null=True)
+    description = models.TextField(null=True, blank=True)
     virtual = models.ForeignKey(virtualGallery, on_delete=models.DO_NOTHING, null=True)
     admin = models.ForeignKey(UserAccount, on_delete=models.DO_NOTHING)
 
@@ -96,6 +97,12 @@ class product(models.Model):
     def extra_artistLastName(self):
         try:
             return self.artist.last_name
+        except:
+            return ''
+
+    def extra_artistDescription(self):
+        try:
+            return self.artist.description
         except:
             return ''
 

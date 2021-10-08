@@ -15,11 +15,12 @@ class userSerializers(serializers.ModelSerializer):
 class productSerializers(serializers.ModelSerializer):
     artistFirstName = serializers.ReadOnlyField(source='extra_artistFirstName')
     artistLastName = serializers.ReadOnlyField(source='extra_artistLastName')
+    artistDescription = serializers.ReadOnlyField(source='extra_artistDescription')
 
     class Meta:
         model = product
         fields = '__all__'
         read_only_fields = (
-            'artistFirstName', 'artistLastName',
+            'artistFirstName', 'artistLastName', 'artistDescription',
         )
 
