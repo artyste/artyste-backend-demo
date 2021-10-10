@@ -42,17 +42,23 @@
                                         <div>Price</div>
                                         <div class="h6">{% if artwork.fiat == 0 %}
                                             <img class="me-2" src="{% static 'images/eth_logo.svg' %}"
-                                                 height="20px"/>{% elif rtwork.fiat == 1 %}
+                                                 height="20px"/>{% elif artwork.fiat == 1 %}
                                             <img class="me-2" src="{% static 'images/dollar.svg' %}"
                                                  width="20px"/>{% else %}
                                             <img class="me-2" src="{% static 'images/solana-logo.svg' %}"
-                                                 height="20px"/>{% endif %}{{ artwork.price }}
+                                                 width="15px"/>{% endif %}{{ artwork.price }}
                                         </div>
                                     </div>
-                                    <div class="text-muted small" v-cloak><span
-                                            class="v-cloak--hidden ">{% if artwork.fiat == 0 %} [[ FormatedEthToUsd(
-                                        {{ artwork.price }}) ]] {% else %}ETH [[ FormatedUsdToEth({{ artwork.price }})
-                                        ]] {% endif %}</span>
+                                    <div class="text-muted small" v-cloak>
+                                        <span class="v-cloak--hidden ">
+                                            {% if artwork.fiat == 0 %}
+                                                [[ FormatedEthToUsd( {{ artwork.price }}) ]]
+                                            {% elif artwork.fiat == 1 %}
+{#                                                ETH [[ FormatedUsdToEth({{ artwork.price }}) ]]#}
+                                            {% else %}
+                                                [[ FormatedEthToUsd( {{ artwork.price }}) ]]
+                                            {% endif %}
+                                        </span>
                                     </div>
                                     {% else %}
                                         <h6 class="text-danger">SOLD</h6>
@@ -75,7 +81,7 @@
         {% for gallery in galleries %}
             <a href="{% url 'gallery-detail' slug=gallery.slug %}" class="col">
                 <div class="img-thumbnail rounded">
-                    <img src="{{ gallery.imglogo.url }}" class="card-img-top">
+                    {% if gallery.imglogo %}<img src="{{ gallery.imglogo.url }}" class="card-img-top">{% endif %}
                 </div>
             </a>
         {% endfor %}

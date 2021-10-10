@@ -28,7 +28,7 @@
         {% for gallery in galleries %}
             <a href="{% url 'gallery-detail' slug=gallery.slug %}" class="col">
                 <div class="img-thumbnail rounded">
-                    <img src="{{ gallery.imglogo.url }}" class="card-img-top">
+                    {% if gallery.imglogo %}<img src="{{ gallery.imglogo.url }}" class="card-img-top">{% endif %}
                 </div>
             </a>
         {% endfor %}

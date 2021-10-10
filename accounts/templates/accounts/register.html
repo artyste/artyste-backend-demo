@@ -65,7 +65,7 @@
 {% endblock %}
 
 {% block cardbottom %}
-    <div class="d-flex justify-content-center links text-primary">
-        <p>Already have an account? &nbsp;<a href="{% if pk1 and pk2 %}{% url 'login' pk1 %}{% else %}{% url 'login' %}{% endif %}" class="ml-2 text-primary">Sign in</a></p>
+    <div class="d-flex justify-content-center links text-light">
+        <p>Already have an account? &nbsp;<a href="{% if pk1 and pk2 %}{% url 'login' pk1 %}{% else %}{% url 'login' %}{% endif %}" class="ml-2 text-light">Sign in</a></p>
     </div>
 {% endblock %}
