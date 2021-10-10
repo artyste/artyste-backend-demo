@@ -30,7 +30,7 @@ if os.environ.get('DJANGO') == '0':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['arthology-api.eba-spazchiv.us-east-1.elasticbeanstalk.com', '127.0.0.1', 'arthology.io', 'api.arthology.io', 'app.arthology.io', 'api.artyste.info', 'demo.artyste.info', 'app.artyste.info']
+ALLOWED_HOSTS = ['arthology-api.eba-spazchiv.us-east-1.elasticbeanstalk.com', '127.0.0.1', 'arthology.io', 'api.arthology.io', 'app.arthology.io', 'api.artyste.info', 'demo.artyste.info', 'app.artyste.info', 'demo.artyste.io']
 EC2_PRIVATE_IP = None
 try:
     EC2_PRIVATE_IP = requests.get(
