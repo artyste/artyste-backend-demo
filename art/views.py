@@ -330,8 +330,13 @@ def productmintmetasol(request):
         }
         metaplex_api = MetaplexAPI(cfg)
 
+        if data['sing_account']:
+            sing_account = data['sing_account']
+        else:
+            sing_account = "5qZ3aah17jwNVf8MLQKKQWV5w3vAkTNZmyu6ex8eJpHK"
+
         try:
-            nft = metaplex_api.mint(settings.SOL_ENDPOINT, artworks_get.mintinghash, "5qZ3aah17jwNVf8MLQKKQWV5w3vAkTNZmyu6ex8eJpHK", data['metadata'])
+            nft = metaplex_api.mint(settings.SOL_ENDPOINT, artworks_get.mintinghash, sing_account, data['metadata'])
 
             artworks_get.mintingstatus = 2
             artworks_get.save()

@@ -146,14 +146,14 @@
 
                   <span v-show="!connected" >
                       <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
-                          <img class="me-2" src="{% static 'images/phantom_white.svg' %}" height="25px"/>
+                          <img class="me-2" src="{% static 'images/phantom_black.svg' %}" height="25px"/>
                            Connect
                       </a>
                 </span>
 
                   <span v-show="connected" >
                      <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
-                          <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
+                          <img class="me-2" src="{% static 'images/phantom_black.svg' %}" height="25px"/>
                            [[ account ]]
                       </a>
                      </span>
@@ -184,9 +184,11 @@
 
 {% if page == 'checkout' %}<script src="https://unpkg.com/openpgp@5.0.0-6/dist/openpgp.min.js"></script>{% endif %}
 
-<script src="{% static '/js/ethers-5.2.min.js' %}" type="application/javascript"></script>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js" type="application/javascript"></script>
+<script>
 
-        <script>
+        {#import * as web3 from 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js';#}
+        console.log(solanaWeb3);
 
 
             function getCookie(name) {
@@ -208,30 +210,30 @@
             const csrftoken = getCookie('csrftoken');
 
             {% if page == 'mint' %}
-                const provider = new ethers.providers.Web3Provider(window.ethereum)
-                const signer = provider.getSigner()
+                {#const provider = new ethers.providers.Web3Provider(window.ethereum)#}
+                {#const signer = provider.getSigner()#}
                 const imgurl = 'https://bafkreif4rzclduw5zu6d4uswwg6o5jzchk4zxmqcbwl5j6trrhpv24qpfu.ipfs.dweb.link/';
-                const contractABI = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"string","name":"tokenURI","type":"string"}],"name":"mintNFT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}]';
-                const contractAddress = "0x4C4a07F737Bf57F6632B6CAB089B78f62385aCaE";
-                const contract = new ethers.Contract(contractAddress, contractABI, signer);
+                {#const contractABI = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"string","name":"tokenURI","type":"string"}],"name":"mintNFT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}]';#}
+                {#const contractAddress = "0x4C4a07F737Bf57F6632B6CAB089B78f62385aCaE";#}
+                {#const contract = new ethers.Contract(contractAddress, contractABI, signer);#}
             {% endif %}
-
-            ethereum.on('chainChanged', (chainId) => {
-                console.log(chainId);
-                app.contchainChange(chainId);
-                window.location.reload();
-            });
-
-            ethereum.on('accountsChanged', (accounts) => {
-                console.log(accounts);
-                app.metaConnect();
-            });
-
-            ethereum.on('connect', (connectInfo) => {
-                console.log(connectInfo);
-            });
-
-
+{##}
+{#            ethereum.on('chainChanged', (chainId) => {#}
+{#                console.log(chainId);#}
+{#                app.contchainChange(chainId);#}
+{#                window.location.reload();#}
+{#            });#}
+{##}
+{#            ethereum.on('accountsChanged', (accounts) => {#}
+{#                console.log(accounts);#}
+{#                app.metaConnect();#}
+{#            });#}
+{##}
+{#            ethereum.on('connect', (connectInfo) => {#}
+{#                console.log(connectInfo);#}
+{#            });#}
+{##}
+{##}
 
 
         var app = new Vue({
@@ -335,17 +337,20 @@
         },
             methods: {
                 metaConnect: async function () {
-                    this.accounts = await ethereum.request({method: 'eth_requestAccounts'});
+                    console.log('----------------------');
+                    this.accounts = await window.solana.connect();
+                    console.log(this.accounts);
                     await this.connect();
                 },
                 connect: async function () {
-                    this.account = this.accounts[0].slice(0, 4) + '...' + this.accounts[0].slice(-4);
-                    console.log(this.accounts);
+
                     this.connected = true;
+                    this.account = this.accounts.publicKey?.toString().slice(0, 4) + '...' + this.accounts.publicKey?.toString().slice(-4);
+
                 },
                 contchainChange: function (chainId) {
                     {#console.log(chainId);#}
-                    this.chainID = chainId;
+                    {#this.chainID = chainId;#}
                 },
 
                 getEthUsd: async function () {
@@ -425,6 +430,8 @@
                 {% if page == 'mint' %}
                     Transaction: async function () {
 
+
+
                         const meta_json = {
                             "name": '{{ product.title }}',
                             "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
@@ -495,56 +502,66 @@
                             const metadata = 'https://' + this.meta_cid + '.ipfs.dweb.link/';
                             console.log(metadata)
                         }
-                    },TransactionSol: async function () {
-                        this.minting = 10;
-                        const meta_json = {
-                            "name": '{{ product.title }}',
-                            "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
-                            "description": '{{ product.description }}',
-                        };
+                    },
 
-                        console.log('MINTING ----------------------------');
-                        console.log('MINTING - Creating Metadata --------');
-                        this.minting = 20;
+                    TransactionSol: async function () {
 
-                        fetch("https://api.nft.storage/upload", {
-                            method: 'POST',
-                            body: JSON.stringify(meta_json),
-                            headers: {
-                                'accept': 'application/json',
-                                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0OEI2NjBkMUQ3MEZGNDk1MjYzNjZDMkNDZERFNTExMzZFNWQ1NDEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODY2NzY0NjE4NywibmFtZSI6IlRlc3QifQ.MVf1uJHqsLPX6HTnZRrSi4VZYfJyS7zS1hNTiqCMUpg',
-                                'Content-Type': 'application/json',
-                            },
-                        }).then(response => {
+                        const connection = new solanaWeb3.Connection('https://api.devnet.solana.com', 'confirmed');
 
-                                response.json().then(async data => {
-                                    this.minting = 40;
-                                    this.meta_cid = data['value']['cid'];
+                        this.minting = 1;
 
-                                    const metadata = 'https://' + data['value']['cid'] + '.ipfs.dweb.link';
-                                    console.log(metadata);
+                        const transaction = new solanaWeb3.Transaction().add(
+                            solanaWeb3.SystemProgram.transfer({
+                                fromPubkey: window.solana.publicKey,
+                                toPubkey: 'DGLyGabZHc2Xb7znZD9FiQouYjtb52dgeZEcGY37uvng',
+                                lamports: 100000000,
+                            })
+                        );
+                        transaction.feePayer = window.solana.publicKey;
+                        transaction.recentBlockhash = (
+                            await connection.getRecentBlockhash()
+                        ).blockhash;
+
+                        if (transaction) {
+                            try {
+                                let signed = await window.solana.signTransaction(transaction);
+                                this.minting = 1;
+                                console.log("Got signature, submitting transaction");
+
+                                let signature = await connection.sendRawTransaction(signed.serialize());
+                                this.minting = 2;
+
+                                await connection.confirmTransaction(signature).then(() => {
+                                    console.log("Transaction Succeed!");
+                                    this.minting = 10;
+
+                                    const meta_json = {
+                                        "name": '{{ product.title }}',
+                                        "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
+                                        "description": '{{ product.description }}',
+                                    };
 
 
-                                    console.log('MINTING - Creating Token -----------');
-                                    fetch("{% url 'artworks-mint-token-sol' %}", {
+                                    fetch("https://api.nft.storage/upload", {
                                         method: 'POST',
-                                        body: JSON.stringify({
-                                            'metadata': metadata,
-                                            'pk': {{ product.id }},
-                                        }),
+                                        body: JSON.stringify(meta_json),
                                         headers: {
-                                            'Accept': 'application/json, text/plain, */*',
+                                            'accept': 'application/json',
+                                            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0OEI2NjBkMUQ3MEZGNDk1MjYzNjZDMkNDZERFNTExMzZFNWQ1NDEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODY2NzY0NjE4NywibmFtZSI6IlRlc3QifQ.MVf1uJHqsLPX6HTnZRrSi4VZYfJyS7zS1hNTiqCMUpg',
                                             'Content-Type': 'application/json',
-                                            "X-CSRFToken": csrftoken,
                                         },
                                     }).then(response => {
 
                                         response.json().then(async data => {
-                                            this.minting = 70;
-                                            console.log(data)
-                                            console.log('MINTING - Creating NFT --------');
+                                            this.minting = 40;
+                                            this.meta_cid = data['value']['cid'];
 
-                                            fetch("{% url 'artworks-mint-metadata-sol' %}", {
+                                            const metadata = 'https://' + data['value']['cid'] + '.ipfs.dweb.link';
+                                            console.log(metadata);
+
+
+                                            console.log('MINTING - Creating Token -----------');
+                                            fetch("{% url 'artworks-mint-token-sol' %}", {
                                                 method: 'POST',
                                                 body: JSON.stringify({
                                                     'metadata': metadata,
@@ -558,10 +575,34 @@
                                             }).then(response => {
 
                                                 response.json().then(async data => {
-                                                    this.minting = 100;
+                                                    this.minting = 70;
                                                     console.log(data)
-                                                    console.log('MINTING - Done --------');
-                                                    window.location.href = "{% url 'artworks-detail' pk=product.id %}";
+                                                    console.log('MINTING - Creating NFT --------');
+
+                                                    fetch("{% url 'artworks-mint-metadata-sol' %}", {
+                                                        method: 'POST',
+                                                        body: JSON.stringify({
+                                                            'metadata': metadata,
+                                                            'pk': {{ product.id }},
+                                                            'sing_account': this.accounts.publicKey?.toString(),
+                                                        }),
+                                                        headers: {
+                                                            'Accept': 'application/json, text/plain, */*',
+                                                            'Content-Type': 'application/json',
+                                                            "X-CSRFToken": csrftoken,
+                                                        },
+                                                    }).then(response => {
+
+                                                        response.json().then(async data => {
+                                                            this.minting = 100;
+                                                            console.log(data)
+                                                            console.log('MINTING - Done --------');
+                                                            window.location.href = "{% url 'artworks-detail' pk=product.id %}";
+
+                                                        });
+
+                                                    });
+
 
                                                 });
 
@@ -570,18 +611,19 @@
 
                                         });
 
-                                    });
-
+                                    })
 
 
                                 });
 
-                            })
+                            } catch (err) {
+                                console.log(err)
+                                this.minting = 0;
+                            }
 
-                        if (this.meta_cid) {
-                            const metadata = 'https://' + this.meta_cid + '.ipfs.dweb.link/';
-                            console.log(metadata)
-                        }
+                        };
+
+
                     },
 
             fpost: function () {

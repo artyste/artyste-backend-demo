@@ -4,7 +4,7 @@
 {% block header %}
 <title>{{ product.title }} - Mint - Artyste</title>
 {#    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>#}
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+{#    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>#}
 {% endblock %}
 
 
@@ -79,25 +79,33 @@
                 </span>
 
             <span v-show="!connected">
+
                       <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
-                          <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
-                           Connect
+                          <img class="me-2" src="{% static 'images/phantom_white.svg' %}" height="25px"/>
+                           Connect to Mint!
                       </a>
+
                 </span>
 
             <span v-show="connected">
-                     <a v-on:click="Transaction" class=" btn btn-success enableEthereumButton v-cloak--hidden" type="submit">Mint!</a>
+
+                     <a v-on:click="TransactionSol" v-if="minting === 0"
+                        class=" btn btn-lg btn-success enableEthereumButton v-cloak--hidden mb-4">Mint!</a>
+                <div v-if="minting !== 0">
+                <p>Progress</p>
+                <div class="progress">
+
+            <div class="progress-bar  progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+                 v-bind:style="{ width: minting + '%'}" aria-valuenow="10"
+                 aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+                </div>
+
                      </span>
         </div>
 
-        <a v-on:click="TransactionSol" class=" btn btn-success ">Mint!  [[ minting ]]</a>
 
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" v-bind:style="{ width: minting + '%'}" aria-valuenow="10"
-                 aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-
-{#        <div v-if="!connected">#}
+        {#        <div v-if="!connected">#}
 {#        <button v-on:click="Transaction" class=" btn btn-success enableEthereumButton" type="submit">Mint!</button>#}
 {#    </div>#}
 {#    <div v-else>#}
