@@ -15,7 +15,8 @@ from cryptography.fernet import Fernet
 import base58
 from solana.account import Account
 from solana.rpc.api import Client
-
+from django.conf import settings
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -30,7 +31,7 @@ def pagehome(request):
 
 
     try:
-        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+        CIRCLEAPIKEY = os.getenv('ARTYSTEDEMO_CIRCLE_SANDBOX')
         url = 'https://api-sandbox.circle.com/v1/wallets/' + request.user.circle_walletId
         headers = {
             'Accept': 'application/json',
@@ -106,7 +107,7 @@ def pagecheckout(request, pk):
 
     if request.method == 'POST':
 
-        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+        CIRCLEAPIKEY = os.getenv('ARTYSTEDEMO_CIRCLE_SANDBOX')
         UUIDGEN = uuid.uuid4()
 
         headers = {
@@ -275,37 +276,73 @@ def pageproductmint(request, pk):
     context['page'] = 'mint'
     return render(request, 'art/mint.html', context)
 
-def pageproductmintsol(request, pk):
-    context = {}
-    print(pk)
-    artworks_get = product.objects.get(pk=pk)
-
-
-    api_endpoint = "https://api.devnet.solana.com"
-    keypair = os.environ.get('ARTYSTEDEMO_KEYPAIR')
-    keypairArr = list(map(int, keypair.split(',')))
-    account = Account(keypairArr[:32])
-
-    print('dubiellaaaa')
-    print(account.public_key())
-    print(api_endpoint)
+def productminttokensol(request):
 
     if request.method == 'POST':
+
+        context = {}
         data = json.loads(request.body)
+        artworks_get = product.objects.get(pk=data['pk'])
+
+        if not artworks_get.mintinghash:
+
+            account = Account(settings.KEYPAIR[:32])
+            cfg = {
+                "PRIVATE_KEY": base58.b58encode(account.secret_key()).decode("ascii"),
+                "PUBLIC_KEY": str(account.public_key()),
+                "DECRYPTION_KEY": Fernet.generate_key().decode("ascii")
+            }
+            metaplex_api = MetaplexAPI(cfg)
+
+            try:
+                deploy = metaplex_api.deploy(settings.SOL_ENDPOINT, "Artyste", "ART")
+
+                artworks_get.mintinghash = deploy
+                artworks_get.save()
+
+                context['status'] = '200'
+                context['token'] = deploy
+                return JsonResponse(context)
+            except:
+                context['status'] = '400'
+                return JsonResponse(context)
+        else:
+            context['status'] = '200'
+            context['token'] = artworks_get.mintinghash
+            return JsonResponse(context)
+
+def productmintmetasol(request):
+
+    if request.method == 'POST':
+
+        print('start NFT')
+        context = {}
+        data = json.loads(request.body)
+        artworks_get = product.objects.get(pk=data['pk'])
+
         print(data['metadata'])
 
+        account = Account(settings.KEYPAIR[:32])
         cfg = {
             "PRIVATE_KEY": base58.b58encode(account.secret_key()).decode("ascii"),
             "PUBLIC_KEY": str(account.public_key()),
             "DECRYPTION_KEY": Fernet.generate_key().decode("ascii")
         }
         metaplex_api = MetaplexAPI(cfg)
-        deploy = metaplex_api.deploy(api_endpoint, "Artyste", "ART")
-        metaplex_api.mint(api_endpoint, deploy, "5qZ3aah17jwNVf8MLQKKQWV5w3vAkTNZmyu6ex8eJpHK", data['metadata'])
 
-    context['product'] = artworks_get
-    context['page'] = 'mint'
-    return render(request, 'art/mint-sol.html', context)
+        try:
+            nft = metaplex_api.mint(settings.SOL_ENDPOINT, artworks_get.mintinghash, "5qZ3aah17jwNVf8MLQKKQWV5w3vAkTNZmyu6ex8eJpHK", data['metadata'])
+
+            artworks_get.mintingstatus = 2
+            artworks_get.save()
+
+            context['status'] = '200'
+            context['nft'] = nft
+            return JsonResponse(context)
+
+        except:
+            context['status'] = '400'
+            return JsonResponse(context)
 
 def pagetxdetail(request, pk):
     context = {}

@@ -24,6 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('ARTYSTEDEMO_DJANGO')
 
+SOL_ENDPOINT = "https://api.devnet.solana.com"
+keypair_env = os.environ.get('ARTYSTEDEMO_KEYPAIR')
+KEYPAIR = list(map(int, keypair_env.split(',')))
+
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('DJANGO') == '0':
     DEBUG = True

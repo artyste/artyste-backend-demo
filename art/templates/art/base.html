@@ -146,7 +146,7 @@
 
                   <span v-show="!connected" >
                       <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
-                          <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
+                          <img class="me-2" src="{% static 'images/phantom_white.svg' %}" height="25px"/>
                            Connect
                       </a>
                 </span>
@@ -263,6 +263,7 @@
                     art_name: '{{ product.title }}',
                     art_Artist: '{{ product.artist.first_name }} {{ product.artist.last_name }}',
                     meta_cid: null,
+                    minting: 0,
                 {% endif %}
 
 
@@ -424,76 +425,164 @@
                 {% if page == 'mint' %}
                     Transaction: async function () {
 
-                const meta_json = {
-                        "name": '{{ product.title }}',
-                        "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
-                        "description": '{{ product.description }}',
-                    };
+                        const meta_json = {
+                            "name": '{{ product.title }}',
+                            "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
+                            "description": '{{ product.description }}',
+                        };
 
-                fetch("https://api.nft.storage/upload", {
-                    method: 'POST',
-                    body: JSON.stringify(meta_json),
-                    headers: {
-                        'accept': 'application/json',
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0OEI2NjBkMUQ3MEZGNDk1MjYzNjZDMkNDZERFNTExMzZFNWQ1NDEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODY2NzY0NjE4NywibmFtZSI6IlRlc3QifQ.MVf1uJHqsLPX6HTnZRrSi4VZYfJyS7zS1hNTiqCMUpg',
-                        'Content-Type': 'application/json',
+                        fetch("https://api.nft.storage/upload", {
+                            method: 'POST',
+                            body: JSON.stringify(meta_json),
+                            headers: {
+                                'accept': 'application/json',
+                                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0OEI2NjBkMUQ3MEZGNDk1MjYzNjZDMkNDZERFNTExMzZFNWQ1NDEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODY2NzY0NjE4NywibmFtZSI6IlRlc3QifQ.MVf1uJHqsLPX6HTnZRrSi4VZYfJyS7zS1hNTiqCMUpg',
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                            .then(response => {
+
+                                response.json().then(async data => {
+                                    this.meta_cid = data['value']['cid'];
+
+                                    const metadata = 'https://' + data['value']['cid'] + '.ipfs.dweb.link';
+                                    console.log(metadata);
+
+
+                                    {#fetch("{% url 'artworks-mint-sol' pk=product.id %}", {#}
+                                    {#    method: 'POST',#}
+                                    {#    body: JSON.stringify({#}
+                                    {#        'metadata': metadata,#}
+                                    {#        'pk': {{ product.id }},#}
+                                    {#    }),#}
+                                    {#    headers: {#}
+                                    {#        'Accept': 'application/json, text/plain, */*',#}
+                                    {#        'Content-Type': 'application/json',#}
+                                    {#        "X-CSRFToken": csrftoken,#}
+                                    {#    },#}
+
+                                    {#window.location.href = "{% url 'artworks-detail' pk=product.id %}";#}
+
+                                    {##}
+                                    {##}
+                                    {#                            await contract.mintNFT(this.accounts[0], metadata).then( res => {#}
+                                    {#                                console.log(res);#}
+                                    {#                                console.log(res.hash);#}
+                                    {##}
+                                    {#                                fetch("{% url 'artworks-mint' pk=product.id %}", {#}
+                                    {#                                    method: 'POST',#}
+                                    {#                                    body: JSON.stringify({#}
+                                    {#                                        'tx': res.hash.toString(),#}
+                                    {#                                        'pk': {{ product.id }},#}
+                                    {#                                    }),#}
+                                    {#                                    headers: {#}
+                                    {#                                        'Accept': 'application/json, text/plain, */*',#}
+                                    {#                                        'Content-Type': 'application/json',#}
+                                    {#                                        "X-CSRFToken": csrftoken,#}
+                                    {#                                    },#}
+                                    {#                                });#}
+                                    {#                                window.location.href = "{% url 'artworks-detail' pk=product.id %}";#}
+                                    {#                                });#}
+                                    {##}
+                                    {##}
+
+
+                                });
+
+                            })
+
+                        if (this.meta_cid) {
+                            const metadata = 'https://' + this.meta_cid + '.ipfs.dweb.link/';
+                            console.log(metadata)
+                        }
+                    },TransactionSol: async function () {
+                        this.minting = 10;
+                        const meta_json = {
+                            "name": '{{ product.title }}',
+                            "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
+                            "description": '{{ product.description }}',
+                        };
+
+                        console.log('MINTING ----------------------------');
+                        console.log('MINTING - Creating Metadata --------');
+                        this.minting = 20;
+
+                        fetch("https://api.nft.storage/upload", {
+                            method: 'POST',
+                            body: JSON.stringify(meta_json),
+                            headers: {
+                                'accept': 'application/json',
+                                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0OEI2NjBkMUQ3MEZGNDk1MjYzNjZDMkNDZERFNTExMzZFNWQ1NDEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODY2NzY0NjE4NywibmFtZSI6IlRlc3QifQ.MVf1uJHqsLPX6HTnZRrSi4VZYfJyS7zS1hNTiqCMUpg',
+                                'Content-Type': 'application/json',
+                            },
+                        }).then(response => {
+
+                                response.json().then(async data => {
+                                    this.minting = 40;
+                                    this.meta_cid = data['value']['cid'];
+
+                                    const metadata = 'https://' + data['value']['cid'] + '.ipfs.dweb.link';
+                                    console.log(metadata);
+
+
+                                    console.log('MINTING - Creating Token -----------');
+                                    fetch("{% url 'artworks-mint-token-sol' %}", {
+                                        method: 'POST',
+                                        body: JSON.stringify({
+                                            'metadata': metadata,
+                                            'pk': {{ product.id }},
+                                        }),
+                                        headers: {
+                                            'Accept': 'application/json, text/plain, */*',
+                                            'Content-Type': 'application/json',
+                                            "X-CSRFToken": csrftoken,
+                                        },
+                                    }).then(response => {
+
+                                        response.json().then(async data => {
+                                            this.minting = 70;
+                                            console.log(data)
+                                            console.log('MINTING - Creating NFT --------');
+
+                                            fetch("{% url 'artworks-mint-metadata-sol' %}", {
+                                                method: 'POST',
+                                                body: JSON.stringify({
+                                                    'metadata': metadata,
+                                                    'pk': {{ product.id }},
+                                                }),
+                                                headers: {
+                                                    'Accept': 'application/json, text/plain, */*',
+                                                    'Content-Type': 'application/json',
+                                                    "X-CSRFToken": csrftoken,
+                                                },
+                                            }).then(response => {
+
+                                                response.json().then(async data => {
+                                                    this.minting = 100;
+                                                    console.log(data)
+                                                    console.log('MINTING - Done --------');
+                                                    window.location.href = "{% url 'artworks-detail' pk=product.id %}";
+
+                                                });
+
+                                            });
+
+
+                                        });
+
+                                    });
+
+
+
+                                });
+
+                            })
+
+                        if (this.meta_cid) {
+                            const metadata = 'https://' + this.meta_cid + '.ipfs.dweb.link/';
+                            console.log(metadata)
+                        }
                     },
-                })
-                    .then(response => {
-
-                        response.json().then(async data => {
-                            this.meta_cid = data['value']['cid'];
-
-                            const metadata = 'https://' + data['value']['cid'] + '.ipfs.dweb.link';
-                            console.log(metadata);
-
-
-                            fetch("{% url 'artworks-mint-sol' pk=product.id %}", {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    'metadata': metadata,
-                                    'pk': {{ product.id }},
-                                }),
-                                headers: {
-                                    'Accept': 'application/json, text/plain, */*',
-                                    'Content-Type': 'application/json',
-                                    "X-CSRFToken": csrftoken,
-                                },
-                            });
-                            window.location.href = "{% url 'artworks-detail' pk=product.id %}";
-
-
-
-                            {#await contract.mintNFT(this.accounts[0], metadata).then( res => {#}
-                            {#    console.log(res);#}
-                            {#    console.log(res.hash);#}
-                            {##}
-                            {#    fetch("{% url 'artworks-mint' pk=product.id %}", {#}
-                            {#        method: 'POST',#}
-                            {#        body: JSON.stringify({#}
-                            {#            'tx': res.hash.toString(),#}
-                            {#            'pk': {{ product.id }},#}
-                            {#        }),#}
-                            {#        headers: {#}
-                            {#            'Accept': 'application/json, text/plain, */*',#}
-                            {#            'Content-Type': 'application/json',#}
-                            {#            "X-CSRFToken": csrftoken,#}
-                            {#        },#}
-                            {#    });#}
-                            {#    window.location.href = "{% url 'artworks-detail' pk=product.id %}";#}
-
-
-
-
-                        });
-
-                    })
-
-                if (this.meta_cid){
-                    const metadata = 'https://' + this.meta_cid + '.ipfs.dweb.link/';
-                    console.log(metadata)
-                }
-            },
 
             fpost: function () {
                     fetch("{% url 'artworks-mint' pk=product.id %}", {

@@ -90,6 +90,12 @@
                      </span>
         </div>
 
+        <a v-on:click="TransactionSol" class=" btn btn-success ">Mint!  [[ minting ]]</a>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" v-bind:style="{ width: minting + '%'}" aria-valuenow="10"
+                 aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
 
 {#        <div v-if="!connected">#}
 {#        <button v-on:click="Transaction" class=" btn btn-success enableEthereumButton" type="submit">Mint!</button>#}
