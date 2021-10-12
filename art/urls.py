@@ -10,6 +10,7 @@ urlpatterns = [
     path('artworks/<int:pk>/', views.pageproductdetail, name='artworks-detail'),
     path('artworks/checkout/<int:pk>/', views.pagecheckout, name='checkout'),
     path('artworks/mint/<int:pk>/', views.pageproductmint, name='artworks-mint'),
+    path('artworks/mint-sol/<int:pk>/', views.pageproductmintsol, name='artworks-mint-sol'),
     path('gallery/<slug:slug>/', views.pagegallerydetail.as_view(), name='gallery-detail'),
     path('galleries/', views.pagegalleries, name='galleries'),
     path('transactions/<int:pk>/', views.pagetxdetail, name='transaction-detail'),

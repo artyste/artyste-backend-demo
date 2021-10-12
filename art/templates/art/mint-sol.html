@@ -1,0 +1,111 @@
+{% extends 'art/base.html' %}
+{% load static %}
+
+{% block header %}
+<title>{{ product.title }} - Mint - Artyste</title>
+{#    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+
+    <div class="mt-4">
+        <h1 class="h4 align-text-bottom">Mint</h1>
+
+        <hr class="mt-2"/>
+    </div>
+
+
+
+    <div class="row">
+    <div class="col-4">
+
+        <div class="img-thumbnail border-0">
+                <img src="{{ product.fileimage.url }}" class="card-img-top">
+            </div>
+
+
+
+    </div>
+    <div class="col-8">
+
+        <h2 class="h6 align-text-bottom">Properties</h2>
+<hr class="mt-2"/>
+<table class="table">
+
+  <tbody>
+    <tr>
+      <th scope="row" class="col-2">Title</th>
+      <td class="">{{ product.title }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Description</th>
+      <td>{{ product.description }}</td>
+
+    </tr>
+    <tr>
+      <th scope="row">Artist</th>
+        <td>{{ product.artist.first_name }} {{ product.artist.last_name }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Royalties</th>
+        <td>{{ product.royalty }}%</td>
+    </tr>
+      <th scope="row">Gallery</th>
+        <td>{{ product.gallery.name }}</td>
+    </tr>
+    <tr>
+      <th scope="row">IPFS CID:</th>
+        <td>{{ product.filehash }}</td>
+    </tr>
+    <tr>
+      <th scope="row">NFT Storage Link:</th>
+        <td><a href="https://{{ product.filehash }}.ipfs.dweb.link/" target="_blank">https://{{ product.filehash }}.ipfs.dweb.link/</a></td>
+    </tr>
+      <th scope="row">Metadata Cid:</th>
+        <td>[[ meta_cid ]]</td>
+    </tr>
+  </tbody>
+</table>
+
+        <div v-cloak>
+                  <span class="v-cloak--inline">
+                      <button class="btn btn-secondary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span class="visually-hidden">Loading...</span>
+</button>
+                </span>
+
+            <span v-show="!connected">
+                      <a v-on:click="metaConnect" class="btn btn-outline-secondary v-cloak--hidden">
+                          <img class="me-2" src="{% static 'images/metamask.svg' %}" height="25px"/>
+                           Connect
+                      </a>
+                </span>
+
+            <span v-show="connected">
+                     <a v-on:click="Transaction" class=" btn btn-success enableEthereumButton v-cloak--hidden" type="submit">Mint!</a>
+                     </span>
+        </div>
+
+
+{#        <div v-if="!connected">#}
+{#        <button v-on:click="Transaction" class=" btn btn-success enableEthereumButton" type="submit">Mint!</button>#}
+{#    </div>#}
+{#    <div v-else>#}
+{#        <button v-on:click="metaConnect" class=" btn btn-danger enableEthereumButton" type="submit">Connect your Wallet!</button>#}
+{#    </div>#}
+
+{#        <button v-on:click="fpost" class=" btn btn-danger enableEthereumButton" type="submit">Connect your Wallet!</button>#}
+
+    </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

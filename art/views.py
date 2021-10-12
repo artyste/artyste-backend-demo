@@ -10,6 +10,14 @@ import uuid
 import requests
 import os
 
+from .api.metaplex_api import MetaplexAPI
+from cryptography.fernet import Fernet
+import base58
+from solana.account import Account
+from solana.rpc.api import Client
+
+
+
 # Create your views here.
 # @login_required(login_url='login')
 def pagehome(request):
@@ -79,6 +87,7 @@ def pageartworksnew(request):
 def pageproductdetail(request, pk):
     context = {}
     artworks_get = product.objects.get(pk=pk)
+
 
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -265,6 +274,38 @@ def pageproductmint(request, pk):
     context['product'] = artworks_get
     context['page'] = 'mint'
     return render(request, 'art/mint.html', context)
+
+def pageproductmintsol(request, pk):
+    context = {}
+    print(pk)
+    artworks_get = product.objects.get(pk=pk)
+
+
+    api_endpoint = "https://api.devnet.solana.com"
+    keypair = os.environ.get('ARTYSTEDEMO_KEYPAIR')
+    keypairArr = list(map(int, keypair.split(',')))
+    account = Account(keypairArr[:32])
+
+    print('dubiellaaaa')
+    print(account.public_key())
+    print(api_endpoint)
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data['metadata'])
+
+        cfg = {
+            "PRIVATE_KEY": base58.b58encode(account.secret_key()).decode("ascii"),
+            "PUBLIC_KEY": str(account.public_key()),
+            "DECRYPTION_KEY": Fernet.generate_key().decode("ascii")
+        }
+        metaplex_api = MetaplexAPI(cfg)
+        deploy = metaplex_api.deploy(api_endpoint, "Artyste", "ART")
+        metaplex_api.mint(api_endpoint, deploy, "5qZ3aah17jwNVf8MLQKKQWV5w3vAkTNZmyu6ex8eJpHK", data['metadata'])
+
+    context['product'] = artworks_get
+    context['page'] = 'mint'
+    return render(request, 'art/mint-sol.html', context)
 
 def pagetxdetail(request, pk):
     context = {}
