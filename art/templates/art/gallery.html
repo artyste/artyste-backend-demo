@@ -13,7 +13,7 @@
 
         <div class="d-flex justify-content-between align-top flex-wrap mt-3">
             <h1 class="align-text-bottom">{{ gallery.name }}</h1>
-            <a href="https://virtual.artyste.io/?gallery={{ gallery.slug }}" target="_blank">
+            <a class="btn btn-outline-light rounded-3" href="https://virtual.artyste.io/?gallery={{ gallery.slug }}" target="_blank">
                 <img src="{% static 'images/virtual-gallery.svg' %}" height="50px" />
             </a>
         </div>
@@ -69,7 +69,7 @@
                                             {% if artwork.fiat == 0 %}
                                                 [[ FormatedEthToUsd( {{ artwork.price }}) ]]
                                             {% elif artwork.fiat == 1 %}
-                                                ETH [[ FormatedUsdToEth({{ artwork.price }}) ]]
+                                                SOL [[ FormatedUsdToEth({{ artwork.price }}) ]]
                                             {% else %}
                                                 [[ FormatedEthToUsd( {{ artwork.price }}) ]]
                                             {% endif %}
