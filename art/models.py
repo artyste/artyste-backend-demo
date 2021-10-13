@@ -79,7 +79,7 @@ class product(models.Model):
     mintingid = models.IntegerField('Minting Id', blank=True, null=True)
 
     wallet = models.CharField(max_length=255, blank=True, null=True)
-    royalty = models.FloatField(default=0)
+    royalty = models.IntegerField(default=0)
 
     visible = models.BooleanField(default=False)
     publish = models.BooleanField(default=False)

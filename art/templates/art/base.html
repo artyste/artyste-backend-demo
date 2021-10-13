@@ -263,6 +263,7 @@
                     imgcid: '{{ product.filehash }}',
                     imgcidurl: 'https://{{ product.filehash }}.ipfs.dweb.link/',
                     art_name: '{{ product.title }}',
+                    royalty: {{ product.royalty }},
                     art_Artist: '{{ product.artist.first_name }} {{ product.artist.last_name }}',
                     meta_cid: null,
                     minting: 0,
@@ -325,12 +326,12 @@
 
 
                         this.timer = setInterval(() => {
-                            {% if page == 'productdetail' %}
-                            if (this.mintingstatus === 1) {
-                                this.tx_get();
-
-                            }
-                            {% endif %}
+{#                            {% if page == 'productdetail' %}#}
+{#                            if (this.mintingstatus === 1) {#}
+{#                                this.tx_get();#}
+{##}
+{#                            }#}
+{#                            {% endif %}#}
                             this.ethusd = this.getEthUsd();
                         }, 30000)
 
@@ -354,10 +355,10 @@
                 },
 
                 getEthUsd: async function () {
-                    fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+                    fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd')
                         .then(response => {
                             response.json().then(async data => {
-                                this.ethusd = data['ethereum']['usd'];
+                                this.ethusd = data['solana']['usd'];
 
                                 {% if page == 'checkout' %}
                                 {% if product.fiat == 0 %}
@@ -539,6 +540,13 @@
                                         "name": '{{ product.title }}',
                                         "image": 'https://{{ product.filehash }}.ipfs.dweb.link/',
                                         "description": '{{ product.description }}',
+                                        "external_url": "https://demo.artyste.info",
+                                        "creators": [
+                                            {
+                                                "address": this.accounts.publicKey?.toString(),
+                                                "share": this.royalty
+                                            }
+                                        ]
                                     };
 
 

@@ -355,7 +355,7 @@ def pagetxdetail(request, pk):
     tx_get = transaction.objects.get(pk=pk)
 
     if tx_get.status == 3:
-        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+        CIRCLEAPIKEY = os.getenv('ARTYSTEDEMO_CIRCLE_SANDBOX')
         headers = {
             "Accept": "application/json",
             "Authorization": "Bearer " + CIRCLEAPIKEY

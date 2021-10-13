@@ -54,7 +54,7 @@ def profilewallet(request):
     context = {}
 
     try:
-        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+        CIRCLEAPIKEY = os.getenv('ARTYSTEDEMO_CIRCLE_SANDBOX')
         url = 'https://api-sandbox.circle.com/v1/wallets/' + request.user.circle_walletId
         headers = {
             'Accept': 'application/json',
