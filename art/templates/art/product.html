@@ -76,7 +76,7 @@
                                     <a class="btn btn-dark v-cloak--inline" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>
                                     <a v-if="mintingstatus === 0" class="btn btn-secondary v-cloak--hidden" href="{% url 'artworks-mint' pk=product.pk %}">Mint NFT</a>
 {#                                    <a v-if="mintingstatus === 1" class="btn btn-warning v-cloak--hidden" href="https://ropsten.etherscan.io/tx/{{ product.mintingtx }}" target="_blank">See Transaction</a>#}
-                                    <a  v-if="mintingstatus === 2" class="btn btn-primary v-cloak--hidden" href=https://explorer.solana.com/address/{{ product.mintinghash }}/metadata?cluster=devnet" target="_blank">Explore</a>
+                                    <a  v-if="mintingstatus === 2" class="btn btn-primary v-cloak--hidden" href="https://explorer.solana.com/address/{{ product.mintinghash }}/metadata?cluster=devnet" target="_blank">Explore</a>
 
                                 </div>
 
