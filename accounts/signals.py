@@ -11,7 +11,7 @@ import os
 def create_product(sender, instance, created, **kwargs):
     if created:
 
-        CIRCLEAPIKEY = os.getenv('ARTHOLOGY_CIRCLE_SANDBOX')
+        CIRCLEAPIKEY = os.getenv('ARTYSTEDEMO_CIRCLE_SANDBOX')
         UUIDGEN = uuid.uuid4()
 
         url = 'https://api-sandbox.circle.com/v1/wallets'
