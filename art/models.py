@@ -114,6 +114,7 @@ class transaction(models.Model):
     FIAT_STATUS = [
         (0, 'Ethereum'),
         (1, 'U.S. Dollar'),
+        (2, 'SOL'),
     ]
     GATE_STATUS = [
         (0, 'MetaMask'),
@@ -136,7 +137,7 @@ class transaction(models.Model):
     gateway = models.IntegerField('Payment Gateway', choices=GATE_STATUS, default=0)
 
     def __str__(self):
-        return self.product.title
+        return self.product
 
 class collection(models.Model):
     name = models.CharField(max_length=255)

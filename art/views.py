@@ -106,7 +106,7 @@ def pagecheckout(request, pk):
     artworks_get = product.objects.get(pk=pk)
 
     if request.method == 'POST':
-
+        print('post')
         CIRCLEAPIKEY = os.getenv('ARTYSTEDEMO_CIRCLE_SANDBOX')
         UUIDGEN = uuid.uuid4()
 
@@ -115,6 +115,8 @@ def pagecheckout(request, pk):
             "Content-Type": "application/json",
             "Authorization": "Bearer " + CIRCLEAPIKEY
         }
+
+
 
         creditCardTotal = request.POST.get('creditCardTotal')
         print(creditCardTotal)
@@ -168,6 +170,8 @@ def pagecheckout(request, pk):
             urlCard = "https://api-sandbox.circle.com/v1/cards"
             responseCard = requests.post(urlCard, json=payloadCard, headers=headers)
             responseCardJson = responseCard.json()
+
+            print(responseCardJson)
 
             if responseCardJson['data']:
                 print('Card Created')
@@ -242,8 +246,8 @@ def pagecheckout(request, pk):
                 print('Error - Creation Card')
                 print(responseCardJson['code'])
 
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print(e)
 
     context['product'] = artworks_get
     context['page'] = 'checkout'
@@ -290,6 +294,8 @@ def productminttokensol(request):
 
     if request.method == 'POST':
 
+        print('start Minting')
+
         context = {}
         data = json.loads(request.body)
         artworks_get = product.objects.get(pk=data['pk'])
@@ -305,7 +311,7 @@ def productminttokensol(request):
             metaplex_api = MetaplexAPI(cfg)
 
             try:
-                deploy = metaplex_api.deploy(settings.SOL_ENDPOINT, "Artyste", "ART")
+                deploy = metaplex_api.deploy(settings.SOL_ENDPOINT, "Artyste_", "ART")
 
                 artworks_get.mintinghash = deploy
                 artworks_get.save()
