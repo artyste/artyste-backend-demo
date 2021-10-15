@@ -1,0 +1,98 @@
+{% extends 'art/base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>{{ artist.first_name }} {{ artist.last_name }} - Artyste</title>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mb-5">
+
+
+        <div class="d-flex justify-content-between align-top flex-wrap mt-3">
+            <h1 class="align-text-bottom">{{ artist.first_name }} {{ artist.last_name }}</h1>
+{#            <a class="btn btn-outline-light rounded-3" href="https://virtual.artyste.io/?gallery={{ gallery.slug }}" target="_blank">#}
+{#                <img src="{% static 'images/virtual-gallery.svg' %}" height="50px" />#}
+{#            </a>#}
+        </div>
+
+        {% if artist.description %}
+            <div class="mt-4 mb-5">
+                {{ artist.description }}
+            </div>
+        {% endif %}
+
+        <hr class="mt-2"/>
+
+        <div class="row">
+
+            <div class="col-2">
+                <div class="img-thumbnail border-0 mb-3">
+                    {% if artist.avatar %}<img src="{{ artist.avatar.url }}" class="img-fluid rounded-3">{% endif %}
+                </div>
+                <div class="d-grid">
+                    <a class="btn btn-outline-dark">Follow</a>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="row row-cols-1 row-cols-lg-3 g-4">
+
+                    {% for artwork in artworks %}
+
+                        <div class="col">
+                            <div class="card h-100">
+                            <a class="stretched-link text-dark" href="{% url 'artworks-detail' pk=artwork.id %}">
+                                <div class="square" style="background-image: url('{% if artwork.fileimage %}{{ artwork.fileimage.url }}{% else %}{% static 'images/card-no-image.jpg' %}{% endif %}')"></div>
+                            </a>
+                                <div class="card-body">
+
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <div class="fw-bold">{{ artwork.title }}</div>
+                                    <small>{{ artwork.artist.last_name }} {{ artwork.artist.first_name }}</small>
+                                </div>
+                                <div class="col-6 text-end">
+                                {% if not artwork.sold %}
+                                    <div class="mb-0 ">
+                                        <div>Price</div>
+                                        <div class="h6">{% if artwork.fiat == 0 %}
+                                            <img class="me-2" src="{% static 'images/eth_logo.svg' %}"
+                                                 height="20px"/>{% elif artwork.fiat == 1 %}
+                                            <img class="me-2" src="{% static 'images/dollar.svg' %}"
+                                                 width="20px"/>{% else %}
+                                            <img class="me-2" src="{% static 'images/solana-logo.svg' %}"
+                                                 width="15px"/>{% endif %}{{ artwork.price }}
+                                        </div>
+                                    </div>
+                                    <div class="text-muted small" v-cloak>
+                                        <span class="v-cloak--hidden ">
+                                            {% if artwork.fiat == 0 %}
+                                                [[ FormatedEthToUsd( {{ artwork.price }}) ]]
+                                            {% elif artwork.fiat == 1 %}
+                                                SOL [[ FormatedUsdToEth({{ artwork.price }}) ]]
+                                            {% else %}
+                                                [[ FormatedEthToUsd( {{ artwork.price }}) ]]
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                {% else %}
+                                        <h6 class="text-danger">SOLD</h6>
+                                    {% endif %}
+                                </div>
+
+
+                            </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -45,7 +45,7 @@
 
                         <td>{{ product.title }}</td>
                         <td>{{ product.get_type_display }}</td>
-                        <td>{% if product.fiat == 0 %}[[ FormatedEthToUsd({{ product.price }}) ]] {% else %}${{ product.price }}{% endif %}</td>
+                        <td>{% if product.fiat == 2 %}[[ FormatedEthToUsd({{ product.price }}) ]] {% else %}${{ product.price }}{% endif %}</td>
                     </tr>
 
                     <tr>

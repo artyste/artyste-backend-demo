@@ -56,17 +56,17 @@
       <th scope="row">Gallery</th>
         <td>{{ product.gallery.name }}</td>
     </tr>
-    <tr>
-      <th scope="row">IPFS CID:</th>
-        <td>{{ product.filehash }}</td>
-    </tr>
-    <tr>
-      <th scope="row">NFT Storage Link:</th>
-        <td><a href="https://{{ product.filehash }}.ipfs.dweb.link/" target="_blank">https://{{ product.filehash }}.ipfs.dweb.link/</a></td>
-    </tr>
-      <th scope="row">Metadata Cid:</th>
-        <td>[[ meta_cid ]]</td>
-    </tr>
+{#    <tr>#}
+{#      <th scope="row">IPFS CID:</th>#}
+{#        <td>{{ product.filehash }}</td>#}
+{#    </tr>#}
+{#    <tr>#}
+{#      <th scope="row">NFT Storage Link:</th>#}
+{#        <td><a href="https://{{ product.filehash }}.ipfs.dweb.link/" target="_blank">https://{{ product.filehash }}.ipfs.dweb.link/</a></td>#}
+{#    </tr>#}
+{#      <th scope="row">Metadata Cid:</th>#}
+{#        <td>[[ meta_cid ]]</td>#}
+{#    </tr>#}
   </tbody>
 </table>
 
@@ -92,7 +92,7 @@
                      <a v-on:click="TransactionSol" v-if="minting === 0"
                         class=" btn btn-lg btn-success enableEthereumButton v-cloak--hidden mb-4">Mint!</a>
                 <div v-if="minting !== 0">
-                <p>Progress</p>
+                <p>Progress: [[ minting_mgs ]]</p>
                 <div class="progress">
 
             <div class="progress-bar  progress-bar-striped bg-success progress-bar-animated" role="progressbar"

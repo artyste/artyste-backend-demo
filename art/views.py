@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from .models import product, gallery, transaction
-from accounts.models import card
+from accounts.models import card, UserAccount
 from .forms import productForm
 from django.views.generic.detail import DetailView
 import json
@@ -260,6 +260,16 @@ class pagegallerydetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+def pageartistdetail(request, slug):
+    context = {}
+    artist = UserAccount.objects.get(nickname=slug)
+    context['artist'] = artist
+    get_artwork = product.objects.filter(artist=artist)
+    context['artworks'] = get_artwork
+
+    return render(request, 'art/artist.html', context)
+
 
 def pageproductmint(request, pk):
     context = {}

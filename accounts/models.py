@@ -32,6 +32,7 @@ class UserAccountManager(BaseUserManager):
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     nickname = models.CharField(max_length=255, unique=True, blank=True, null=True)
+    avatar = models.ImageField('Avatar', upload_to='users/', blank=True, null=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)

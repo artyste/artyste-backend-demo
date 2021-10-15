@@ -13,6 +13,7 @@ urlpatterns = [
     path('artworks/mint/sol/token/', views.productminttokensol, name='artworks-mint-token-sol'),
     path('artworks/mint/sol/metadata/', views.productmintmetasol, name='artworks-mint-metadata-sol'),
     path('gallery/<slug:slug>/', views.pagegallerydetail.as_view(), name='gallery-detail'),
+    path('artist/<slug:slug>/', views.pageartistdetail, name='artist-detail'),
     path('galleries/', views.pagegalleries, name='galleries'),
     path('transactions/<int:pk>/', views.pagetxdetail, name='transaction-detail'),
 ]
