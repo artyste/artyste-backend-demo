@@ -4,7 +4,7 @@ from django import forms
 
 class productForm(ModelForm):
     FIAT_STATUS = [
-        (0, 'Ethereum'),
+        (2, 'SOL'),
         (1, 'U.S. Dollar'),
     ]
     title = forms.CharField(label='title', required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'text'}))
