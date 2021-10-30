@@ -8,4 +8,5 @@ urlpatterns = [
     path('galleries-list/', views.apiGalleriesList, name='api-galleries-list'),
     path('gallery/<slug:slug>/', views.apiGalleryDetail, name='api-gallery'),
     path('user/<int:pk>/', views.apiUser, name='api-user'),
+    path('nft/add/', views.apinft, name='nft-add'),
 ]

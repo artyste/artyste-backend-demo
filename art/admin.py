@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import gallery, collection, product, transaction, virtualGallery
+from .models import gallery, collection, product, transaction, virtualGallery, nft
 # Register your models here.
 
 
@@ -17,4 +17,8 @@ class galleryAdmin(admin.ModelAdmin):
 
 @admin.register(virtualGallery)
 class virtualGalleryAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(nft)
+class nftAdmin(admin.ModelAdmin):
     pass

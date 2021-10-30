@@ -144,3 +144,30 @@ class collection(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+class nft(models.Model):
+    SALE = [
+        (0, 'AirDrop'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+        (6, 'Open'),
+    ]
+    STATUS = [
+        (0, 'Created'),
+        (1, 'Minted'),
+    ]
+
+    nft = models.CharField(max_length=255)
+    sale = models.IntegerField('Status', choices=SALE, default=0)
+    status = models.IntegerField('Status', choices=STATUS, default=0)
+    wallet = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.nft
+
+

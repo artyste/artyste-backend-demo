@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .serializers import gallerySerializers, productSerializers, userSerializers
 from rest_framework.response import Response
-from art.models import gallery, product
+from art.models import gallery, product, nft
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from accounts.models import UserAccount
 
@@ -66,3 +66,27 @@ def apiUser(requests, pk):
     user_get = UserAccount.objects.filter(pk=pk)
     serializer = userSerializers(user_get, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
+def apinft(request):
+
+    Status = {}
+
+    nft_get = request.data
+    nft_get_nft = nft_get['nft']
+    nft_get_sale = nft_get['sale']
+    nft_get_status = nft_get['status']
+    nft_get_wallet = nft_get['wallet']
+
+    newnft = nft(
+        nft=nft_get_nft,
+        sale=1,
+        status=1,
+        wallet=nft_get_wallet,
+    )
+    newnft.save()
+
+    Status['nft'] = True
+    return JsonResponse(Status, safe=False)
